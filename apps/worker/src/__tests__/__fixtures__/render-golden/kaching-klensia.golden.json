@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "description": "Golden baseline capturado da landing Klensia em prod ANTES de qualquer extração da Fase 9. Serve pra provar que renderBundleOffers/renderProductJson/renderCurrencyConfig extraídos (Fases 9B/C/D) produzem HTML equivalente.",
+    "capturedAt": "2026-09-26T~06:45:00Z",
+    "sourceLandingId": "ce453ca8-019c-48f8-932b-66fda46943bb",
+    "sourceUrl": "https://placeholder-clone-muh9bdm5.cubipiccanti.online",
+    "currency": "USD",
+    "bundleAdapter": "kaching",
+    "workerCommitAtCapture": "ac2ef45",
+    "notes": [
+      "Fixture NÃO contém HTML completo (991KB, poluição de repo).",
+      "Contém regiões críticas + hash total. Regressão detecta:",
+      "  - Bundle cards com data-ll-price=locked mudam texto/atributos",
+      "  - Runtime script markers ausentes",
+      "  - Contagem de $ ou € muda inesperadamente",
+      "  - SHA total muda sem mudança correspondente em outras marcas",
+      "Aurivita/PSS: não há landings vivas em prod pra capturar como golden real.",
+      "Testes de 9B/C/D usarão fixtures sintéticas menores dedicadas a cada tema."
+    ]
+  },
+  "regions": {
+    "bundleCardsLocked": [
+      "<div class=\"kaching-bundles__bar-price\" data-a11y-label=\"Price:\" bis_skin_checked=\"1\" data-ll-price=\"locked\">$30.00",
+      "<div class=\"kaching-bundles__bar-price\" data-a11y-label=\"Price:\" bis_skin_checked=\"1\" data-ll-price=\"locked\">$60.00",
+      "<div class=\"kaching-bundles__bar-price\" data-a11y-label=\"Price:\" bis_skin_checked=\"1\" data-ll-price=\"locked\">$70.00"
+    ],
+    "runtimeMarkers": {
+      "llCurrencyVar": "\"USD\"",
+      "hasEngineV2": true,
+      "hasCheckoutHandler": true,
+      "hasBundleSelect": true,
+      "hasFbq": true
+    },
+    "dataAttributes": {
+      "dataLandingVariantIds": [
+        "ba54708e-77a0-44bc-a29e-2109e6a31dc9",
+        "15bcc47d-413a-4078-92bc-88f5d4da2ed7",
+        "6df0a80f-6b07-442b-b896-fe0f0d4d1d35"
+      ]
+    },
+    "counts": {
+      "totalBytes": 990766,
+      "dollarPrices": 5,
+      "euroPrices": 11,
+      "kachingBars": 2
+    },
+    "totalSha256": "f18f1113abdff039221f9227ca83b2ec21da9208d8e739f6cb8c9f0a529c3e77"
+  },
+  "expectedBundleData": {
+    "offers": [
+      { "position": 0, "priceCents": 3000, "qty": 1 },
+      { "position": 1, "priceCents": 6000, "qty": 3 },
+      { "position": 2, "priceCents": 7000, "qty": 5 }
+    ]
+  }
+}

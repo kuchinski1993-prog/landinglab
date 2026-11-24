@@ -1,0 +1,439 @@
+/*
+ * Story 22.1b — telas de acesso (Entrar, Criar conta, Esqueci, Criar senha, Emergência).
+ *
+ * HTML/CSS próprios, SEM Polaris (nem React nem Web Components): se o CDN do Polaris cair, o
+ * login continua de pé (T4). Visual medido no print do login da Shopify
+ * (docs/prints/onda-16/shopify-login-1440.png): fundo escuro em degradê (#0a1314 no alto, ao centro,
+ * dissolvendo para #02090a), logo no canto superior esquerdo (38 px), cartão branco 476 px com
+ * cantos de 20 px e 40 px de respiro, campo cinza #f3f3f3 com anel de foco azul #005bd3, botão
+ * escuro #1c2425 de 44 px e rodapé discreto. O CornerGlobe escuro (21.2a-v3) fica no canto superior
+ * direito, atrás de tudo (z-index 0).
+ * `.ds-auth-form`, `.ds-auth-field`, `.ds-auth-button` e `.ds-auth-alert` também servem ao
+ * /alterar-senha (dentro do shell, `.ds-auth-panel`).
+ */
+
+.ds-auth,
+.ds-auth-panel {
+  --ds-auth-font: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue',
+    sans-serif;
+  --ds-auth-text: #303030;
+  --ds-auth-text-secondary: #616161;
+  --ds-auth-input-bg: #f3f3f3;
+  --ds-auth-input-border: #8a8a8a;
+  --ds-auth-focus: #005bd3;
+  --ds-auth-button-bg: #1c2425;
+  --ds-auth-button-bg-hover: #2a3233;
+  --ds-auth-link: #005bd3;
+  --ds-auth-critical-bg: #fee9e8;
+  --ds-auth-critical-text: #8e1f0b;
+  --ds-auth-success-bg: #e3f8ec;
+  --ds-auth-success-text: #0c5132;
+  --ds-auth-warning-bg: #fff1e3;
+  --ds-auth-warning-text: #5e4200;
+  font-family: var(--ds-auth-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Página ─────────────────────────────────────────────────────────── */
+.ds-auth {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background-color: #02090a;
+  background-image: radial-gradient(ellipse 50% 83% at 50% 0%, #0a1314 50%, #02090a 100%);
+  color: var(--ds-auth-text);
+}
+
+.ds-auth__brand {
+  position: relative;
+  z-index: 1;
+  align-self: start;
+  padding: 38px 0 24px 38px;
+  line-height: 0;
+}
+
+.ds-auth__main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.ds-auth__footer {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  padding: 32px 16px 24px;
+  color: #b5b5b5;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-align: center;
+}
+
+/* ─── Cartão ─────────────────────────────────────────────────────────── */
+.ds-auth-card {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 476px;
+  padding: 40px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.ds-auth-card__title {
+  margin: 0;
+  color: var(--ds-auth-text);
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.ds-auth-card__subtitle {
+  margin: 0.125rem 0 0;
+  color: var(--ds-auth-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 550;
+}
+
+.ds-auth-card__body {
+  margin-top: 1.75rem;
+}
+
+.ds-auth-card__text {
+  margin: 0 0 1rem;
+  color: var(--ds-auth-text);
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+}
+
+/* ─── Formulário ─────────────────────────────────────────────────────── */
+.ds-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0;
+}
+
+.ds-auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.ds-auth-field__label {
+  color: var(--ds-auth-text);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 450;
+}
+
+.ds-auth-field__optional {
+  color: var(--ds-auth-text-secondary);
+}
+
+.ds-auth-field__control {
+  position: relative;
+  display: flex;
+}
+
+.ds-auth-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 40px;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--ds-auth-input-border);
+  border-radius: 8px;
+  background: var(--ds-auth-input-bg);
+  color: #1a1a1a;
+  font: 450 0.875rem/1.25rem var(--ds-auth-font);
+}
+
+.ds-auth-input--with-toggle {
+  padding-right: 3rem;
+}
+
+textarea.ds-auth-input {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.ds-auth-input:focus {
+  outline: 2px solid var(--ds-auth-focus);
+  outline-offset: 1px;
+  border-color: #1a1a1a;
+}
+
+.ds-auth-input[aria-invalid='true'] {
+  border-color: #c70a24;
+}
+
+.ds-auth-input:disabled {
+  opacity: 0.6;
+}
+
+.ds-auth-toggle {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 32px;
+  margin-top: -16px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #4a4a4a;
+  cursor: pointer;
+}
+
+.ds-auth-toggle:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.ds-auth-toggle:focus-visible {
+  outline: 2px solid var(--ds-auth-focus);
+  outline-offset: 0;
+}
+
+.ds-auth-field__hint,
+.ds-auth-field__error {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+.ds-auth-field__hint {
+  color: var(--ds-auth-text-secondary);
+}
+
+.ds-auth-field__error {
+  color: #8e1f0b;
+  font-weight: 550;
+}
+
+.ds-auth-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ds-auth-text-secondary);
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+.ds-auth-checklist__item::before {
+  content: '○';
+  display: inline-block;
+  width: 1.25rem;
+}
+
+.ds-auth-checklist__item--ok {
+  color: var(--ds-auth-success-text);
+}
+
+.ds-auth-checklist__item--ok::before {
+  content: '✓';
+}
+
+/* Campo-isca do cadastro: fora da tela e da árvore de acessibilidade (não `display: none` —
+   robôs simples ignoram campos escondidos assim). */
+.ds-auth-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ─── Botões e links ─────────────────────────────────────────────────── */
+.ds-auth-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  padding: 0.625rem 1rem;
+  border: 0;
+  border-radius: 8px;
+  background: var(--ds-auth-button-bg);
+  box-shadow: inset 0 -3px 0 rgba(255, 255, 255, 0.07);
+  color: #fff;
+  font: 600 0.875rem/1.25rem var(--ds-auth-font);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ds-auth-button:hover:not(:disabled) {
+  background: var(--ds-auth-button-bg-hover);
+}
+
+.ds-auth-button:focus-visible {
+  outline: 2px solid var(--ds-auth-focus);
+  outline-offset: 2px;
+}
+
+.ds-auth-button:disabled {
+  background: #3a4243;
+  color: rgba(255, 255, 255, 0.72);
+  cursor: not-allowed;
+}
+
+.ds-auth-button--secondary {
+  background: #f1f1f1;
+  box-shadow: inset 0 0 0 1px #d4d4d4;
+  color: var(--ds-auth-text);
+}
+
+.ds-auth-button--secondary:hover:not(:disabled) {
+  background: #e8e8e8;
+}
+
+.ds-auth-button--secondary:disabled {
+  background: #f1f1f1;
+  color: #8a8a8a;
+}
+
+.ds-auth-button--inline {
+  align-self: flex-start;
+  width: auto;
+}
+
+.ds-auth-link {
+  color: var(--ds-auth-link);
+  font-weight: 550;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.ds-auth-link:hover {
+  text-decoration: underline;
+}
+
+.ds-auth-link:focus-visible {
+  outline: 2px solid var(--ds-auth-focus);
+  outline-offset: 2px;
+}
+
+.ds-auth-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -0.25rem;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+.ds-auth-switch {
+  margin: 1.75rem 0 0;
+  color: var(--ds-auth-text);
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+/* ─── Avisos ─────────────────────────────────────────────────────────── */
+.ds-auth-alert {
+  margin: 0;
+  padding: 0.625rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  font-weight: 550;
+}
+
+.ds-auth-alert:focus {
+  outline: 2px solid var(--ds-auth-focus);
+  outline-offset: 1px;
+}
+
+.ds-auth-alert--critical {
+  background: var(--ds-auth-critical-bg);
+  color: var(--ds-auth-critical-text);
+}
+
+.ds-auth-alert--success {
+  background: var(--ds-auth-success-bg);
+  color: var(--ds-auth-success-text);
+}
+
+.ds-auth-alert--warning {
+  background: var(--ds-auth-warning-bg);
+  color: var(--ds-auth-warning-text);
+}
+
+/* ─── /alterar-senha (dentro do shell) ───────────────────────────────── */
+.ds-auth-panel {
+  box-sizing: border-box;
+  max-width: 34rem;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+.ds-auth-panel__card {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(26, 26, 26, 0.07), 0 0 0 1px rgba(26, 26, 26, 0.07);
+}
+
+/* ─── Celular ─────────────────────────────────────────────────────────── */
+@media (max-width: 639px) {
+  .ds-auth {
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .ds-auth__brand {
+    padding: 24px 0 24px 20px;
+  }
+
+  .ds-auth__main {
+    align-items: flex-start;
+    padding: 0 12px;
+  }
+
+  .ds-auth-card {
+    padding: 28px 20px;
+    border-radius: 16px;
+  }
+
+  .ds-auth-input,
+  .ds-auth-button {
+    min-height: 44px;
+    font-size: 1rem;
+  }
+
+  .ds-auth-toggle {
+    width: 44px;
+    height: 44px;
+    margin-top: -22px;
+    right: 0;
+  }
+
+  .ds-auth-link {
+    display: inline-block;
+    padding: 0.75rem 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-auth *,
+  .ds-auth-panel * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

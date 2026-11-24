@@ -1,0 +1,33 @@
+{
+  "name": "@blackshop/landinglab-storefront",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "dotenv --no-expand -e ../../.env -e ../../.env.local -- next dev -p 3011",
+    "build": "next build",
+    "start": "next start -p 3011",
+    "typecheck": "tsc --noEmit",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@blackshop/db": "workspace:*",
+    "@blackshop/landinglab-domains": "workspace:*",
+    "@blackshop/landinglab-render": "workspace:*",
+    "@blackshop/payments": "workspace:*",
+    "@blackshop/pricing": "workspace:*",
+    "@blackshop/shared": "workspace:*",
+    "@stripe/react-stripe-js": "^7.0.0",
+    "@stripe/stripe-js": "^10.0.0",
+    "drizzle-orm": "^0.36.4",
+    "next": "^14.2.15",
+    "postgres": "^3.4.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.5.4"
+  }
+}

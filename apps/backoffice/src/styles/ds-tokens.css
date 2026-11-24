@@ -1,0 +1,2370 @@
+/*
+ * Story 20.1 — tokens do painel novo (Polaris Web Components 2.x).
+ *
+ * Regras (ver docs/ux/guia-padroes-de-tela.md e ADR-003):
+ *  1. Tela migrada usa os componentes `s-*` e as props deles (gap="base",
+ *     padding="base", tone="critical"...). Este arquivo só cobre o que fica
+ *     FORA dos componentes: esqueleto de carregamento, estado de falha do CDN
+ *     e pequenos ajustes de layout (ex.: link que envolve um cartão).
+ *  2. Sem Tailwind em telas migradas: só classes `ds-*` daqui. O teste
+ *     `ds-migrated-no-tailwind.test.ts` falha se um arquivo marcado com
+ *     `@ds-migrated` usar outra classe.
+ *  3. Tudo fica dentro de `.ds-screen` (o wrapper do PolarisGate) — nada vaza
+ *     para as telas que ainda usam Polaris React.
+ *  4. O Polaris 2 publica as variáveis dele com sufixo de versão
+ *     (ex.: `--p-space-400-6e076`); o sufixo muda a cada versão, então NÃO
+ *     referencie essas variáveis. Os valores abaixo espelham os do Polaris 2.0.
+ *  5. Tema escuro: fora de escopo (ADR-003).
+ */
+
+/*
+ * Convivência com o Polaris React 13 (única regra fora de `.ds-screen`).
+ *
+ * O bundle Polaris 2 injeta a webfont "Inter" no <head>. A pilha de fontes do
+ * Polaris React começa por 'Inter' — sem esta regra, TODAS as telas antigas
+ * trocariam de fonte (medido no spike: 20–53 mil pixels diferentes por tela).
+ * 'BS Inter Local' só aponta para uma Inter INSTALADA no computador (local()),
+ * então quem não tem Inter instalada continua vendo a fonte do sistema e quem
+ * tem continua vendo a Inter local — exatamente como antes do bundle.
+ * Os `s-*` usam variáveis próprias (com sufixo de versão) e não são afetados.
+ * Remover na 20.last, junto com o Polaris React.
+ */
+@font-face {
+  font-family: 'BS Inter Local';
+  src: local('Inter'), local('Inter Regular'), local('Inter-Regular');
+  font-weight: 100 900;
+}
+:root:root {
+  --p-font-family-sans: 'BS Inter Local', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto,
+    'Helvetica Neue', sans-serif;
+}
+
+/*
+ * Story 20.5f — título de página das telas que ainda estão em Polaris React no
+ * MESMO estilo do título do `s-page` (segunda regra fora de `.ds-screen`).
+ *
+ * As telas legadas (`<Page title>` do Polaris React, `PageHeader` do TrustShield/
+ * VSL e os poucos `<h1>` soltos) mostravam o título em outra fonte (pilha do
+ * sistema, 20px) — diferente das telas já migradas. Os valores abaixo foram
+ * medidos no navegador no título do `s-page` (/orders): ShopifyInter 26px/32px,
+ * -0.02em, #101010; peso 700 por decisão do owner (2026-11-03: "título em negrito
+ * pelo design system da BlackShop"). `.ds-page-title` é o título das telas DS
+ * (DsPageHeader) — a mesma regra garante títulos idênticos nos dois sistemas.
+ * Só o título muda: nenhuma tela legada teve arquivo de lógica tocado. A parte
+ * do Polaris React sai na 20.13.
+ */
+.Polaris-Header-Title,
+.Polaris-Header-Title > .Polaris-Text--root,
+.ds-legacy-page-title,
+.ds-page-title {
+  font-family: ShopifyInter, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 1.625rem;
+  line-height: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #101010;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ds-screen {
+  /* cor */
+  --ds-color-bg: #f1f1f1;
+  --ds-color-surface: #fff;
+  --ds-color-surface-secondary: #f7f7f7;
+  --ds-color-text: #303030;
+  --ds-color-text-secondary: #616161;
+  --ds-color-border: #e3e3e3;
+  --ds-color-critical-surface: #fee8eb;
+  --ds-color-critical-text: #8e0b21;
+  --ds-color-skeleton: #e3e3e3;
+  /* tipografia */
+  --ds-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto,
+    'Helvetica Neue', sans-serif;
+  --ds-font-size-body: 0.8125rem;
+  --ds-font-size-heading: 0.875rem;
+  --ds-font-weight-heading: 650;
+  /* espaçamento e forma */
+  --ds-space-100: 0.25rem;
+  --ds-space-200: 0.5rem;
+  --ds-space-300: 0.75rem;
+  --ds-space-400: 1rem;
+  --ds-radius-200: 0.5rem;
+  --ds-radius-300: 0.75rem;
+
+  font-family: var(--ds-font-family);
+  color: var(--ds-color-text);
+}
+
+/* Link (Next <Link>) que envolve um cartão inteiro. */
+.ds-screen .ds-card-link {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--ds-radius-300);
+}
+.ds-screen .ds-card-link:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 2px;
+}
+.ds-screen .ds-card-link > s-section {
+  height: 100%;
+}
+
+/* Esqueleto (enquanto o bundle ou os dados carregam) — sem depender de `s-*`. */
+.ds-screen .ds-skeleton-card {
+  background: var(--ds-color-surface);
+  border-radius: var(--ds-radius-300);
+  padding: var(--ds-space-400);
+  display: grid;
+  gap: var(--ds-space-300);
+  box-shadow: 0 1px 0 rgba(26, 26, 26, 0.07);
+}
+.ds-screen .ds-skeleton-line {
+  height: 0.75rem;
+  border-radius: var(--ds-radius-200);
+  background: var(--ds-color-skeleton);
+  animation: ds-pulse 1.6s ease-in-out infinite;
+}
+.ds-screen .ds-skeleton-line--heading {
+  height: 1.25rem;
+  width: 40%;
+}
+.ds-screen .ds-skeleton-line--short {
+  width: 60%;
+}
+.ds-screen .ds-skeleton-pill {
+  display: inline-block;
+  height: 1.25rem;
+  width: 7rem;
+  border-radius: 999px;
+  background: var(--ds-color-skeleton);
+  animation: ds-pulse 1.6s ease-in-out infinite;
+}
+@keyframes ds-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-screen .ds-skeleton-line,
+  .ds-screen .ds-skeleton-pill {
+    animation: none;
+  }
+}
+
+/* Estado de falha do CDN (os `s-*` não existem aqui — HTML puro). */
+.ds-screen .ds-load-error {
+  max-width: 36rem;
+  margin: var(--ds-space-400) auto;
+  padding: var(--ds-space-400);
+  border-radius: var(--ds-radius-300);
+  background: var(--ds-color-critical-surface);
+  color: var(--ds-color-critical-text);
+  display: grid;
+  gap: var(--ds-space-300);
+  font-size: var(--ds-font-size-body);
+}
+.ds-screen .ds-load-error__title {
+  margin: 0;
+  font-size: var(--ds-font-size-heading);
+  font-weight: var(--ds-font-weight-heading);
+}
+.ds-screen .ds-load-error__text {
+  margin: 0;
+}
+.ds-screen .ds-load-error__button {
+  justify-self: start;
+  font: inherit;
+  font-weight: var(--ds-font-weight-heading);
+  padding: var(--ds-space-100) var(--ds-space-300);
+  border-radius: var(--ds-radius-200);
+  border: 1px solid currentColor;
+  background: var(--ds-color-surface);
+  color: var(--ds-color-text);
+  cursor: pointer;
+}
+.ds-screen .ds-page-fallback {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: var(--ds-space-400);
+  display: grid;
+  gap: var(--ds-space-400);
+}
+
+/* Story 20.3 — gráfico de vendas próprio (DsSalesChart) e números da home. */
+.ds-screen {
+  --ds-chart-bar: #4a6cf7;
+  --ds-chart-bar-active: #1f3fbf;
+  --ds-chart-grid: #e3e3e3;
+}
+.ds-screen .ds-chart {
+  display: grid;
+  gap: var(--ds-space-200);
+  justify-items: start;
+}
+.ds-screen .ds-chart__svg {
+  width: 100%;
+  height: 12.5rem;
+  overflow: visible;
+}
+.ds-screen .ds-chart__grid {
+  stroke: var(--ds-chart-grid);
+  stroke-width: 1;
+}
+.ds-screen .ds-chart__hit {
+  fill: transparent;
+}
+.ds-screen .ds-chart__fill {
+  fill: var(--ds-chart-bar);
+}
+.ds-screen .ds-chart__bar:focus {
+  outline: none;
+}
+.ds-screen .ds-chart__bar--active .ds-chart__fill,
+.ds-screen .ds-chart__bar:focus-visible .ds-chart__fill {
+  fill: var(--ds-chart-bar-active);
+}
+.ds-screen .ds-chart__bar:focus-visible .ds-chart__hit {
+  stroke: #005bd3;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+.ds-screen .ds-chart__axis-row {
+  display: grid;
+  width: 100%;
+}
+.ds-screen .ds-chart__axis {
+  color: var(--ds-color-text-secondary);
+  font-size: 0.6875rem;
+  text-align: center;
+  white-space: nowrap;
+  overflow: visible;
+}
+.ds-screen .ds-chart__tooltip {
+  min-height: 1rem;
+  color: var(--ds-color-text);
+  font-size: 0.6875rem;
+  font-weight: var(--ds-font-weight-heading);
+}
+.ds-screen .ds-chart__toggle {
+  font: inherit;
+  font-size: var(--ds-font-size-body);
+  color: #005bd3;
+  background: none;
+  border: 0;
+  padding: var(--ds-space-100) 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.ds-screen .ds-chart__toggle:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 2px;
+  border-radius: var(--ds-radius-200);
+}
+.ds-screen .ds-metric-value {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: var(--ds-font-weight-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Story 20.4b — Configurações no visual novo: link "Voltar para…", <details> nativo e texto técnico. */
+.ds-screen .ds-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-100);
+  align-self: flex-start;
+  color: var(--ds-color-text-secondary);
+  font-size: var(--ds-font-size-body);
+  text-decoration: none;
+  border-radius: var(--ds-radius-200);
+}
+.ds-screen .ds-back-link:hover {
+  color: var(--ds-color-text);
+  text-decoration: underline;
+}
+.ds-screen .ds-back-link:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 2px;
+}
+.ds-screen .ds-details > summary {
+  cursor: pointer;
+  font-size: var(--ds-font-size-body);
+  font-weight: var(--ds-font-weight-heading);
+  color: var(--ds-color-text-secondary);
+  border-radius: var(--ds-radius-200);
+}
+.ds-screen .ds-details > summary:hover {
+  color: var(--ds-color-text);
+}
+.ds-screen .ds-details > summary:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 2px;
+}
+.ds-screen .ds-details[open] > summary {
+  margin-bottom: var(--ds-space-200);
+}
+.ds-screen .ds-guide-text {
+  margin: 0;
+  padding: var(--ds-space-200) var(--ds-space-300);
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: var(--ds-font-size-body);
+  color: var(--ds-color-text-secondary);
+  background: var(--ds-color-surface-secondary);
+  border-radius: var(--ds-radius-200);
+}
+.ds-screen .ds-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+/*
+ * Story 20.5f — região viva (role="status"/"alert") que fica sempre montada dentro de um
+ * `s-stack`: sem caixa própria, a região vazia não ocupa um `gap` do empilhamento; quando o
+ * banner aparece, ele entra no empilhamento como um bloco normal.
+ */
+.ds-screen .ds-live-region {
+  display: contents;
+}
+
+/*
+ * Story 20.5f — cabeçalho de página com ações (DsPageHeader): título e ações na mesma linha,
+ * dentro da coluna do conteúdo do s-page; ações à direita, quebram para baixo do título só em
+ * telas estreitas. O título usa a regra `.ds-page-title` (mesmo estilo do título do s-page).
+ */
+.ds-screen .ds-page-header {
+  display: grid;
+  gap: var(--ds-space-100);
+  padding-block: var(--ds-space-400) var(--ds-space-300);
+}
+.ds-screen .ds-page-title {
+  margin: 0;
+}
+.ds-screen .ds-page-header__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-300);
+}
+.ds-screen .ds-page-header__title {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-200);
+  min-width: 0;
+}
+.ds-screen .ds-page-header__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ds-space-200);
+  margin-inline-start: auto;
+}
+
+/*
+ * Story 20.5g — página larga (DsWidePage) e texto de lista que quebra em vez de cortar.
+ *
+ * Fora do admin da Shopify o `s-page inlineSize="large"` tem só 16px à esquerda, 4px à direita e 0 em
+ * cima (medido; a largura padrão tem 16px em cima e 32px dos lados, numa coluna fixa de 966px). O
+ * wrapper completa o respiro da página larga com o padrão do Shopify Admin para páginas de largura
+ * total (24px dos lados): 16 + 8 = 24px à esquerda, 4 + 20 = 24px à direita, 16px em cima.
+ * Conferido no navegador em 1280–1920px (story 20.5g).
+ */
+.ds-screen .ds-page-wide {
+  padding: var(--ds-space-400) 1.25rem 0 var(--ds-space-200);
+}
+/*
+ * As células do s-table vêm com `white-space: nowrap` (shadow DOM do Polaris): um título longo esticava
+ * a coluna e empurrava as outras para fora do cartão. Estes blocos quebram em até 2 linhas (reticências
+ * só depois da 2ª) e têm largura mínima para a coluna não ficar espremida.
+ */
+.ds-screen .ds-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+/*
+ * Lista de Produtos. As colunas do s-table são `auto` (grade): a sobra é dividida por igual entre as
+ * colunas que ainda podem crescer. Por isso o título tem largura mínima que acompanha a tela (10rem até
+ * 1280px, até 20rem em telas largas — 70rem = menu lateral + respiro + as 8 colunas de largura fixa +
+ * marca mínima) e a marca tem teto (14rem): a sobra vai para o título e a tabela cabe sem rolagem
+ * horizontal a partir de 1280px (medido). Abaixo disso o cartão rola na horizontal.
+ */
+.ds-screen .ds-product-title-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-200);
+  min-inline-size: clamp(10rem, 100vw - 70rem, 20rem);
+}
+.ds-screen .ds-product-title {
+  min-inline-size: 0;
+}
+.ds-screen .ds-product-vendor {
+  min-inline-size: 6rem;
+  max-inline-size: 14rem;
+}
+/*
+ * Story 21.1 — Saúde da operação: cartões da mesma linha com a mesma altura. O host do s-section é
+ * `display: contents`; com o wrapper em grade de uma linha, a caixa interna do cartão estica até a
+ * altura da linha (medido: Worker/Câmbio/API com a mesma altura em 1280 e 1440).
+ */
+.ds-screen .ds-health-card {
+  display: grid;
+  grid-template-rows: 1fr;
+  min-width: 0;
+}
+.ds-screen .ds-health-fact {
+  display: grid;
+  gap: var(--ds-space-100);
+  min-width: 0;
+}
+/* Story 21.4 — texto longo dentro de célula do s-table (a célula não quebra linha por padrão): quebra
+   dentro de uma largura legível para a tabela caber na coluna sem rolagem horizontal. */
+.ds-screen .ds-cell-wrap {
+  display: block;
+  white-space: normal;
+  min-width: 12rem;
+  max-width: 28rem;
+}
+
+/* Story 21.6 — Assistente de negócios: "Recentes" à esquerda (recolhível) e conversa à direita; uma
+   coluna em telas estreitas (sem rolagem horizontal em 390 px). Resposta como texto (sem HTML). */
+.ds-screen .ds-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.ds-screen .ds-assistant-layout {
+  display: grid;
+  grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr);
+  gap: var(--ds-space-400);
+  align-items: start;
+}
+.ds-screen .ds-assistant-layout--collapsed {
+  grid-template-columns: minmax(0, 8rem) minmax(0, 1fr);
+}
+@media (max-width: 900px) {
+  .ds-screen .ds-assistant-layout,
+  .ds-screen .ds-assistant-layout--collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.ds-screen .ds-assistant-recents,
+.ds-screen .ds-assistant-main {
+  min-width: 0;
+  background: var(--ds-color-surface);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-300);
+  padding: var(--ds-space-300);
+}
+.ds-screen .ds-assistant-recents__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-200);
+}
+.ds-screen .ds-assistant-recents__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-100);
+  margin-top: var(--ds-space-200);
+  max-height: 32rem;
+  overflow-y: auto;
+}
+.ds-screen .ds-assistant-recent {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-100);
+  border-radius: var(--ds-radius-200);
+}
+.ds-screen .ds-assistant-recent--active {
+  background: var(--ds-color-surface-secondary);
+}
+.ds-screen .ds-assistant-recent__open {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--ds-space-200);
+  background: none;
+  border: 0;
+  border-radius: var(--ds-radius-200);
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ds-screen .ds-assistant-recent__open:hover,
+.ds-screen .ds-assistant-recent__open:focus-visible {
+  background: var(--ds-color-surface-secondary);
+}
+.ds-screen .ds-assistant-recent__date {
+  font-size: 0.75rem;
+  color: var(--ds-color-text-secondary);
+}
+.ds-screen .ds-assistant-recent__title {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-screen .ds-assistant-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-300);
+}
+.ds-screen .ds-assistant-empty {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-200);
+  padding: var(--ds-space-400) 0;
+}
+.ds-screen .ds-assistant-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-200);
+}
+.ds-screen .ds-assistant-example {
+  padding: var(--ds-space-200) var(--ds-space-300);
+  background: var(--ds-color-surface-secondary);
+  border: 1px solid var(--ds-color-border);
+  border-radius: 999px;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.ds-screen .ds-assistant-example:hover,
+.ds-screen .ds-assistant-example:focus-visible {
+  border-color: var(--ds-color-text-secondary);
+}
+.ds-screen .ds-assistant-thread {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-300);
+}
+.ds-screen .ds-assistant-msg {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.ds-screen .ds-assistant-msg--user {
+  align-self: flex-end;
+  max-width: min(36rem, 90%);
+  background: var(--ds-color-surface-secondary);
+  border-radius: var(--ds-radius-300);
+  padding: var(--ds-space-200) var(--ds-space-300);
+}
+.ds-screen .ds-assistant-msg__question {
+  margin: 0;
+  white-space: pre-wrap;
+}
+.ds-screen .ds-assistant-msg__activity {
+  margin: 0;
+  color: var(--ds-color-text-secondary);
+  font-style: italic;
+}
+.ds-screen .ds-assistant-msg__error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ds-space-200);
+  padding: var(--ds-space-200) var(--ds-space-300);
+  background: var(--ds-color-critical-surface);
+  color: var(--ds-color-critical-text);
+  border-radius: var(--ds-radius-200);
+}
+.ds-screen .ds-assistant-msg__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--ds-space-200);
+  margin-top: var(--ds-space-100);
+}
+.ds-screen .ds-assistant-msg__chips {
+  font-size: 0.75rem;
+  color: var(--ds-color-text-secondary);
+}
+.ds-screen .ds-assistant-text__p {
+  margin: 0 0 var(--ds-space-200);
+}
+.ds-screen .ds-assistant-text__list {
+  margin: 0 0 var(--ds-space-200);
+  padding-left: 1.25rem;
+}
+.ds-screen .ds-assistant-composer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-100);
+}
+.ds-screen .ds-assistant-composer__label {
+  font-weight: var(--ds-font-weight-heading);
+}
+.ds-screen .ds-assistant-composer__input {
+  width: 100%;
+  min-height: 3.5rem;
+  resize: vertical;
+  box-sizing: border-box;
+  padding: var(--ds-space-200) var(--ds-space-300);
+  border: 1px solid #8a8a8a;
+  border-radius: var(--ds-radius-200);
+  font: inherit;
+  color: inherit;
+  background: var(--ds-color-surface);
+}
+.ds-screen .ds-assistant-composer__input:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 1px;
+}
+.ds-screen .ds-assistant-composer__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-200);
+}
+.ds-screen .ds-assistant-composer__count,
+.ds-screen .ds-assistant-hint {
+  font-size: 0.75rem;
+  color: var(--ds-color-text-secondary);
+  margin: 0;
+}
+
+/* Story 20.10b — controle deslizante nativo (altura do logo do checkout): o DS não tem "range". */
+.ds-screen .ds-range {
+  inline-size: 100%;
+  accent-color: #303030;
+  cursor: pointer;
+}
+.ds-screen .ds-range:disabled {
+  cursor: not-allowed;
+}
+.ds-screen .ds-range-label {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ds-space-200);
+  font-size: var(--ds-font-size-body);
+  font-weight: var(--ds-font-weight-heading);
+}
+
+/*
+ * Story 20.10b — editor da landing: área de soltar imagem (Imagens do produto), tabela de ofertas que rola
+ * dentro do cartão quando não cabe (8 colunas) e larguras dos campos das ofertas.
+ */
+.ds-screen .ds-dropzone {
+  display: block;
+  padding: var(--ds-space-400) var(--ds-space-400);
+  border: 2px dashed #ccc;
+  border-radius: var(--ds-radius-200);
+  background: #fafafa;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.ds-screen .ds-dropzone[data-has-preview] {
+  padding: var(--ds-space-200);
+}
+.ds-screen .ds-dropzone[data-dragging] {
+  border-color: #008060;
+  background: #f0faf7;
+}
+.ds-screen .ds-dropzone__preview {
+  display: block;
+  max-height: 180px;
+  max-width: 100%;
+  border-radius: var(--ds-space-100);
+  object-fit: contain;
+}
+.ds-screen .ds-table-scroll {
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+/* Todas as células da linha reservam a altura do campo de Preço (campo + texto de ajuda) com o campo no
+   topo: a célula centraliza o conteúdo, então alturas iguais deixam os campos alinhados na mesma linha. */
+.ds-screen .ds-bundle-field {
+  display: block;
+  min-inline-size: 7rem;
+  min-block-size: 3.5rem;
+  white-space: normal;
+}
+/* Larguras mínimas somam menos que a coluna útil de 1280: a tabela cabe sem cortar a última coluna. */
+.ds-screen .ds-bundle-field--wide {
+  min-inline-size: 10rem;
+}
+.ds-screen .ds-bundle-field--narrow {
+  min-inline-size: 4.5rem;
+}
+.ds-screen .ds-bundle-field--index {
+  display: flex;
+  align-items: center;
+  min-inline-size: 0;
+  min-block-size: 0;
+  block-size: 1.875rem;
+  margin-block-end: calc(3.5rem - 1.875rem);
+}
+
+/*
+ * Story 20.10c — cartão-botão de alternância (DsToggleCard): os dois modos de "Gerar ou clonar" lado a
+ * lado, como na tela antiga, sem `style` inline. Ativo = borda de destaque e fundo informativo; foco do
+ * teclado com o contorno padrão do DS; mão no cartão inteiro.
+ */
+.ds-screen .ds-toggle-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ds-space-100);
+  inline-size: 100%;
+  min-block-size: 100%;
+  box-sizing: border-box;
+  padding: var(--ds-space-400) var(--ds-space-400);
+  border: 2px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-300);
+  background: var(--ds-color-surface);
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+.ds-screen .ds-toggle-card:hover {
+  border-color: #b5b5b5;
+}
+.ds-screen .ds-toggle-card[aria-pressed='true'] {
+  border-color: #005bd3;
+  background: #eaf4ff;
+}
+.ds-screen .ds-toggle-card:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 2px;
+}
+.ds-screen .ds-toggle-card:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/*
+ * Story 20.10c — Domínios: célula do domínio (apelido, nome e notas empilhados; quebra em vez de alargar a
+ * coluna), tags que quebram linha dentro da célula e o contêiner que recebe o foco dos avisos de erro
+ * (sem contorno próprio: o aviso é anunciado e fica visível).
+ */
+.ds-screen .ds-domain-cell {
+  display: grid;
+  gap: 0.125rem;
+  min-inline-size: 11rem;
+  max-inline-size: 15rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.ds-screen .ds-domain-tags {
+  min-width: 8rem;
+  max-width: 12rem;
+}
+.ds-screen .ds-focus-container:focus {
+  outline: none;
+}
+
+/* Story 20.10d — ponto vermelho das assinaturas com pagamento pendente/não pagas (o mesmo da tabela antiga). */
+.ds-screen .ds-dot-critical {
+  display: inline-block;
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: #c70a24;
+}
+/* Story 20.10d — células de texto da tabela de pedidos: quebram (e-mail longo, landing, "− € reembolsado")
+   em vez de alargar a coluna e empurrar Total/Rastreio para fora do cartão (medido em 1280). */
+.ds-screen .ds-order-cell {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 7rem;
+  max-width: 13rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.ds-screen .ds-order-cell--narrow {
+  min-width: 5rem;
+  max-width: 8rem;
+}
+
+/*
+ * Story 20.10d (PR B) — Suporte das landings: ponto de "não lida" na lista (mesma cor do ponto da
+ * tela antiga, `--p-color-bg-fill-info`) e texto da mensagem do cliente como texto puro, com as
+ * quebras de linha preservadas e palavras longas quebradas.
+ */
+.ds-screen .ds-unread-dot {
+  display: inline-block;
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+  background: #91d0ff;
+  flex: none;
+}
+
+.ds-screen .ds-message-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* ── Story 20.12a — Fábrica de Lojas (bloco próprio, para rebase trivial com outros PRs visuais) ── */
+/* Etapas do pipeline: lista sem marcador, rótulo à esquerda e selo do estado à direita. */
+.ds-screen .ds-steps {
+  display: grid;
+  gap: var(--ds-space-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-screen .ds-steps__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-300);
+}
+/* Amostra de cor da paleta sugerida (a cor vem do `style` inline). */
+.ds-screen .ds-swatch {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-200);
+}
+/* ── fim Story 20.12a ── */
+
+/* ── Story 20.11d (PR B) — aviso flutuante do editor de etapa (no lugar do Toast do Polaris React, que
+   flutuava no rodapé): mesmo lugar, centralizado no rodapé da tela, acima do conteúdo. ── */
+.ds-screen .ds-toast-dock {
+  position: fixed;
+  inset-inline: 0;
+  bottom: var(--ds-space-400);
+  z-index: 520;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.ds-screen .ds-toast-dock__item {
+  pointer-events: auto;
+  inline-size: min(32rem, calc(100vw - 2rem));
+}
+/* ── fim Story 20.11d ── */
+
+/* ── Story 20.15a — Atendimento (TrustShield): menu interno, sino e cartões de número ──
+ * Sem `.ds-screen` no seletor: o menu fica no layout (fora do PolarisGate da página) e o cartão/gráfico
+ * também aparecem em telas ainda em Polaris React até o PR B. Cores e medidas dos tokens do DS. */
+.ds-nav-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0 1.25rem;
+  background: #fff;
+  border-bottom: 1px solid #e3e3e3;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: #303030;
+}
+.ds-nav-tabs__start {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+}
+.ds-nav-tabs__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-right: 1rem;
+  font-size: 0.875rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.ds-nav-tabs__list {
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ds-nav-tabs__tab {
+  display: inline-block;
+  padding: 0.875rem 0.75rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  font-weight: 450;
+  color: #616161;
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ds-nav-tabs__tab:hover {
+  color: #303030;
+}
+.ds-nav-tabs__tab:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: -2px;
+  border-radius: 0.25rem;
+}
+.ds-nav-tabs__tab--active {
+  font-weight: 650;
+  color: #303030;
+  border-bottom-color: #303030;
+}
+.ds-nav-tabs__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+/* Botão só-ícone com contador (sino). */
+.ds-icon-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: #303030;
+  cursor: pointer;
+}
+.ds-icon-button:hover,
+.ds-icon-button[aria-expanded='true'] {
+  background: #f1f1f1;
+}
+.ds-icon-button:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 1px;
+}
+.ds-icon-button__live {
+  position: absolute;
+  top: -0.125rem;
+  right: -0.125rem;
+}
+.ds-icon-button__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 1.125rem;
+  block-size: 1.125rem;
+  padding: 0 0.3125rem;
+  border-radius: 0.5625rem;
+  background: #e51c00;
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 650;
+  line-height: 1;
+}
+/* Painel ancorado (DsAnchoredPanel): mesmo visual do popover do Polaris. */
+.ds-anchored {
+  position: relative;
+  display: inline-flex;
+}
+.ds-anchored__panel {
+  position: absolute;
+  top: calc(100% + 0.375rem);
+  right: 0;
+  z-index: 30;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 0.375rem -0.125rem rgba(26, 26, 26, 0.2), 0 0 0 1px rgba(26, 26, 26, 0.07);
+  overflow: hidden;
+  text-align: start;
+}
+.ds-anchored__panel--start {
+  right: auto;
+  left: 0;
+}
+.ds-bell {
+  inline-size: 22.5rem;
+  max-inline-size: calc(100vw - 2rem);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 0.8125rem;
+  color: #303030;
+}
+.ds-bell__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e3e3e3;
+}
+.ds-bell__empty {
+  padding: 1.5rem;
+  text-align: center;
+}
+.ds-bell__list {
+  display: grid;
+  gap: 0.125rem;
+  margin: 0;
+  padding: 0.375rem;
+  list-style: none;
+}
+.ds-bell__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.ds-bell__text {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+.ds-bell__tone {
+  flex: none;
+}
+/* Cartão de número (StatCard): faixa de cor à esquerda (`--ds-stat-accent`), número grande. */
+.ds-stat-card-cell {
+  min-width: 0;
+}
+.ds-stat-card-link {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 0.75rem;
+}
+.ds-stat-card-link:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 2px;
+}
+.ds-stat-card-link > s-section {
+  height: 100%;
+}
+.ds-stat-card {
+  display: flex;
+  gap: 0.75rem;
+}
+.ds-stat-card__accent {
+  flex: none;
+  inline-size: 4px;
+  border-radius: 0.5rem;
+  background: var(--ds-stat-accent, #e3e3e3);
+}
+.ds-stat-card__label {
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+}
+.ds-stat-card__value {
+  font-size: 1.75rem;
+  line-height: 2.25rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: #303030;
+}
+.ds-stat-card__value--loading,
+.ds-stat-card__value--soon {
+  color: #616161;
+}
+.ds-stat-card__value--soon {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+/* Texto de erro em vermelho (ex.: falha do gráfico de 7 dias — mesmo texto de antes). */
+.ds-critical-text {
+  color: #8e0b21;
+}
+/* Gráfico de 7 dias: mesmo SVG, mesma largura máxima de antes (520px). */
+.ds-volume-chart {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: 32.5rem;
+  block-size: auto;
+  margin-block-start: 0.75rem;
+}
+/* ── fim Story 20.15a ── */
+
+/* ── Story 20.15a (PR B) — Visão geral e Desempenho do Atendimento ── */
+/* Cabeçalho de cartão com ação à direita (título/frase + botão ou link). */
+.ds-screen .ds-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-300);
+  padding: var(--ds-space-400) var(--ds-space-400) var(--ds-space-200);
+}
+.ds-screen .ds-section-head--flat {
+  padding: 0;
+}
+.ds-screen .ds-section-head > s-stack {
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+.ds-screen .ds-inline-link {
+  color: #005bd3;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ds-screen .ds-inline-link:hover {
+  text-decoration: underline;
+}
+.ds-screen .ds-inline-link:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+.ds-screen .ds-list-note {
+  padding: var(--ds-space-400);
+}
+.ds-screen .ds-list-note--empty {
+  padding-block: 1.5rem;
+}
+/* "Mais urgentes agora": linha inteira é o link (Ctrl/Cmd-clique abre em nova aba). */
+.ds-screen .ds-urgent-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-screen .ds-urgent-list > li {
+  border-top: 1px solid var(--ds-color-border);
+}
+.ds-screen .ds-urgent-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ds-space-300);
+  padding: var(--ds-space-300) var(--ds-space-400);
+  color: inherit;
+  text-decoration: none;
+}
+.ds-screen .ds-urgent-row:hover {
+  background: var(--ds-color-surface-secondary);
+}
+.ds-screen .ds-urgent-row:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: -2px;
+}
+.ds-screen .ds-urgent-row__main {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+.ds-screen .ds-urgent-row__who {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-200);
+  min-width: 0;
+}
+.ds-screen .ds-urgent-row__sender {
+  font-weight: 650;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-screen .ds-urgent-row__subject,
+.ds-screen .ds-urgent-row__time {
+  color: var(--ds-color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-screen .ds-urgent-row__time {
+  font-size: 0.75rem;
+}
+/* Assuntos mais comuns: rótulo, barra proporcional (largura no `style`) e número. */
+.ds-screen .ds-topic-bars {
+  display: grid;
+  gap: var(--ds-space-200);
+}
+.ds-screen .ds-topic-bars__row {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 12.5rem) 1fr 2.5rem;
+  align-items: center;
+  gap: var(--ds-space-300);
+}
+.ds-screen .ds-topic-bars__track {
+  display: block;
+  block-size: 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--ds-color-surface-secondary);
+}
+.ds-screen .ds-topic-bars__fill {
+  display: block;
+  block-size: 100%;
+  border-radius: 0.25rem;
+  background: #91d0ff;
+}
+.ds-screen .ds-topic-bars__count {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+/* ── fim Story 20.15a (PR B) ── */
+
+/* ── Story 20.15b (PR A) — Caixa de entrada e Spam do Atendimento ──
+ * Layout de 3 painéis (pastas | lista | leitura) que antes vinha do `<style>` injetado pela página
+ * (`LAYOUT_CSS`, classes `ts-mail*`): mesmas colunas, alturas e pontos de quebra. */
+.ds-screen .ds-mail {
+  display: grid;
+  grid-template-columns: 232px minmax(0, 1fr);
+  height: calc(100vh - 200px);
+  min-height: 560px;
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-300);
+  overflow: hidden;
+  background: var(--ds-color-surface);
+  box-shadow: 0 1px 0 rgba(26, 26, 26, 0.07);
+}
+.ds-screen .ds-mail__list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.ds-screen .ds-mail__pane {
+  display: none;
+  min-width: 0;
+  min-height: 0;
+  border-left: 1px solid var(--ds-color-border);
+}
+.ds-screen .ds-mail[data-open='true'] {
+  grid-template-columns: 232px minmax(340px, 0.85fr) minmax(0, 1.15fr);
+}
+.ds-screen .ds-mail[data-open='true'] .ds-mail__pane {
+  display: block;
+}
+.ds-screen .ds-mail__hint kbd {
+  font-family: inherit;
+  font-size: 10px;
+  padding: 0 4px;
+  border-radius: 3px;
+  border: 1px solid var(--ds-color-border);
+  background: var(--ds-color-surface-secondary);
+}
+@media (max-width: 1280px) {
+  .ds-screen .ds-mail {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+  .ds-screen .ds-mail[data-open='true'] {
+    grid-template-columns: 200px minmax(300px, 0.9fr) minmax(0, 1.1fr);
+  }
+}
+@media (max-width: 1080px) {
+  .ds-screen .ds-mail[data-open='true'] {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+  .ds-screen .ds-mail[data-open='true'] .ds-mail__list {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .ds-screen .ds-mail,
+  .ds-screen .ds-mail[data-open='true'] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    height: auto;
+  }
+  .ds-screen .ds-mail__sidebar {
+    flex-direction: row !important;
+    overflow-x: auto;
+    border-right: none !important;
+    border-bottom: 1px solid var(--ds-color-border);
+  }
+  .ds-screen .ds-mail__sidebar ul {
+    display: flex;
+  }
+  .ds-screen .ds-mail__sidebar > div {
+    display: none;
+  }
+  .ds-screen .ds-mail__list,
+  .ds-screen .ds-mail__pane {
+    min-height: 70vh;
+  }
+  .ds-screen .ds-mail[data-open='true'] .ds-mail__pane {
+    border-left: none;
+  }
+}
+/* Cabeçalho da lista: título da pasta, frase, busca e assunto. */
+.ds-screen .ds-mail__list-head {
+  padding: 0.75rem 0.875rem 0.625rem;
+  border-bottom: 1px solid var(--ds-color-border);
+}
+.ds-screen .ds-mail__list-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--ds-space-200);
+}
+.ds-screen .ds-mail__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-200);
+  margin-top: 0.625rem;
+}
+.ds-screen .ds-mail__search {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.ds-screen .ds-mail__topic {
+  flex: 0 0 200px;
+}
+.ds-screen .ds-mail__search-box {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-200);
+  min-block-size: 2rem;
+  padding: 0 0.25rem 0 0.625rem;
+  border: 1px solid #8a8a8a;
+  border-radius: var(--ds-radius-200);
+  background: var(--ds-color-surface);
+}
+.ds-screen .ds-mail__search-box:focus-within {
+  outline: 2px solid #005bd3;
+  outline-offset: 1px;
+}
+.ds-screen .ds-mail__search-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  padding: 0.375rem 0;
+  background: transparent;
+  font: inherit;
+  font-size: var(--ds-font-size-body);
+  color: var(--ds-color-text);
+}
+.ds-screen .ds-mail__search-input::-webkit-search-cancel-button {
+  display: none;
+}
+/* Lista e barra de ferramentas. */
+.ds-screen .ds-mail__list-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+.ds-screen .ds-mail__toolbar-start,
+.ds-screen .ds-mail__toolbar-end,
+.ds-screen .ds-mail__bulk {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--ds-space-100);
+  min-width: 0;
+}
+.ds-screen .ds-mail__toolbar-end {
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+}
+.ds-screen .ds-mail__bulk {
+  gap: var(--ds-space-200);
+}
+.ds-screen .ds-mail__check {
+  padding: 0 0.25rem;
+}
+.ds-screen .ds-mail__scroll {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
+}
+.ds-screen .ds-mail__error {
+  padding: 1.5rem;
+}
+.ds-screen .ds-mail__loading {
+  padding: 2rem;
+  text-align: center;
+}
+.ds-screen .ds-mail__rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-screen .ds-mail__empty {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+.ds-screen .ds-mail__empty-action {
+  margin-top: var(--ds-space-300);
+}
+.ds-screen .ds-mail__no-selection {
+  padding: 4rem 2rem;
+  max-width: 26rem;
+  margin: 0 auto;
+  text-align: center;
+}
+/* Linha da lista (estado nos atributos data-*). */
+.ds-screen .ds-mail-row {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--ds-space-100);
+  padding: 0.625rem 0.875rem 0.625rem 0.375rem;
+  border-bottom: 1px solid #ebebeb;
+  border-left: 3px solid transparent;
+  background: var(--ds-color-surface-secondary);
+  cursor: pointer;
+}
+.ds-screen .ds-mail-row[data-unread='true'] {
+  background: var(--ds-color-surface);
+}
+.ds-screen .ds-mail-row[data-checked='true'] {
+  background: #f1f1f1;
+}
+.ds-screen .ds-mail-row[data-critical='true'] {
+  border-left-color: #e51c00;
+}
+.ds-screen .ds-mail-row[data-selected='true'] {
+  background: #f1f6fe;
+  border-left-color: #005bd3;
+}
+.ds-screen .ds-mail-row:hover {
+  box-shadow: inset 0 -1px 0 var(--ds-color-border), 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.ds-screen .ds-mail-row__check {
+  padding-top: 1px;
+}
+.ds-screen .ds-mail-row__star:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+.ds-screen .ds-mail-row__body {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+  padding-left: 2px;
+}
+.ds-screen .ds-mail-row__line {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+}
+.ds-screen .ds-mail-row__sender {
+  font-weight: 500;
+  color: var(--ds-color-text);
+}
+.ds-screen .ds-mail-row[data-unread='true'] .ds-mail-row__sender,
+.ds-screen .ds-mail-row[data-unread='true'] .ds-mail-row__date {
+  font-weight: 700;
+  color: var(--ds-color-text);
+}
+.ds-screen .ds-mail-row__count {
+  font-weight: 400;
+  color: var(--ds-color-text-secondary);
+}
+.ds-screen .ds-mail-row__clip {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+.ds-screen .ds-mail-row__date {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: var(--ds-color-text-secondary);
+}
+.ds-screen .ds-mail-row__subject {
+  color: var(--ds-color-text);
+}
+.ds-screen .ds-mail-row[data-unread='true'] .ds-mail-row__subject {
+  font-weight: 650;
+}
+.ds-screen .ds-mail-row__tags {
+  display: inline-flex;
+  gap: var(--ds-space-100);
+  flex-shrink: 0;
+}
+.ds-screen .ds-mail-row__snippet {
+  font-size: 0.75rem;
+  color: var(--ds-color-text-secondary);
+}
+/* Pastas. */
+.ds-screen .ds-mail-folder:hover {
+  background: #f1f1f1 !important;
+}
+.ds-screen .ds-mail-folder:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: -2px;
+}
+.ds-screen .ds-mail-folder__icon {
+  display: inline-flex;
+  inline-size: 20px;
+  block-size: 20px;
+  flex: none;
+}
+.ds-screen .ds-mail-folder__icon svg {
+  inline-size: 20px;
+  block-size: 20px;
+  fill: currentColor;
+}
+.ds-screen .ds-mail-folder__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Caixa de spam: cartão com seleção à esquerda. */
+.ds-screen .ds-list-note--center {
+  text-align: center;
+}
+.ds-screen .ds-spam-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--ds-space-200);
+}
+.ds-screen .ds-spam-card__who {
+  display: grid;
+  gap: 0.125rem;
+  word-break: break-word;
+}
+.ds-screen .ds-spam-card__preview {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--ds-color-text);
+}
+/* ── fim Story 20.15b (PR A) ── */
+
+/* ── Story 20.15b (PR B) — leitura do e-mail: painel, corpo e contexto do cliente ──
+ * Sem `.ds-screen` no seletor: estes componentes também aparecem em telas ainda em Polaris React
+ * (detalhe do e-mail, conversa, reembolso, disputa) até os PRs seguintes. */
+.ds-pane__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.125rem;
+}
+.ds-pane__head {
+  padding: 1rem 1.25rem 0.5rem;
+}
+.ds-pane__head > s-heading {
+  word-break: break-word;
+}
+.ds-pane__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+}
+.ds-pane__classification {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #616161;
+}
+.ds-pane__classification strong {
+  color: #303030;
+}
+.ds-pane__reclassify {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.ds-pane__reclassify-field {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 13.75rem;
+}
+.ds-pane__tab {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  padding: 0.5rem 0.125rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 450;
+  color: #616161;
+}
+.ds-pane__tab--active {
+  font-weight: 650;
+  color: #303030;
+  border-bottom-color: #303030;
+}
+.ds-pane__tab:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: -2px;
+}
+.ds-pane__body {
+  flex: 1;
+  overflow: auto;
+  padding: 0.25rem 1.25rem 1.5rem;
+  min-height: 0;
+}
+.ds-pane__loading {
+  padding: 2rem;
+  text-align: center;
+}
+.ds-pane__message {
+  display: grid;
+  gap: 0.75rem;
+}
+.ds-pane__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+}
+.ds-pane__attachment-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 11.25rem;
+}
+.ds-pane__attachment-size {
+  color: #616161;
+}
+.ds-pane__collapsed-from {
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+.ds-pane__collapsed-date {
+  font-size: 0.75rem;
+  color: #616161;
+  flex-shrink: 0;
+}
+/* Corpo do e-mail (EmailBodyViewer). */
+.ds-email {
+  margin-top: 1rem;
+}
+.ds-email__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1rem 0.25rem 0.75rem;
+  border-bottom: 1px solid #e3e3e3;
+  margin-bottom: 0.75rem;
+}
+.ds-email__header-main {
+  min-width: 0;
+  flex: 1;
+}
+.ds-email__from {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ds-email__from-name {
+  font-size: 0.9375rem;
+  font-weight: 650;
+  color: #303030;
+  word-break: break-word;
+}
+.ds-email__from-address,
+.ds-email__date {
+  font-size: 0.75rem;
+  color: #616161;
+  word-break: break-word;
+}
+.ds-email__date {
+  white-space: nowrap;
+}
+.ds-email__subject {
+  margin-top: 0.375rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #303030;
+  line-height: 1.35;
+}
+.ds-email__bar,
+.ds-email__controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ds-email__bar {
+  justify-content: space-between;
+}
+.ds-email__note {
+  margin-top: 0.5rem;
+}
+.ds-email__body {
+  margin-top: 0.75rem;
+  background: #fff;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e3e3e3;
+  overflow: auto;
+  max-width: 100%;
+  word-break: break-word;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: #303030;
+}
+.ds-email__body--text {
+  white-space: pre-wrap;
+  font-family: 'Charter', 'Georgia', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+.ds-email__link {
+  color: #005bd3;
+  text-decoration: underline;
+}
+/* Contexto do cliente (CustomerContextPanel). */
+.ds-ctx__email {
+  font-size: 0.8125rem;
+  word-break: break-word;
+}
+.ds-ctx__end {
+  display: flex;
+  justify-content: flex-end;
+}
+.ds-ctx__notes {
+  display: grid;
+  gap: 0.5rem;
+  border-top: 1px solid #e3e3e3;
+  padding-top: 0.75rem;
+}
+.ds-ctx__note {
+  display: grid;
+  gap: 0.25rem;
+  background: #f7f7f7;
+  border: 1px solid #e3e3e3;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+.ds-ctx__note-text {
+  font-size: 0.8125rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.ds-ctx__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+}
+.ds-ctx__muted {
+  color: #616161;
+}
+.ds-ctx__small {
+  font-size: 0.75rem;
+}
+.ds-ctx__badge {
+  margin-left: 0.25rem;
+}
+.ds-ctx__email-item {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border: 1px solid #e3e3e3;
+  border-radius: 0.5rem;
+  background: #fff;
+}
+.ds-ctx__email-link {
+  color: #303030;
+  font-weight: 500;
+}
+/* Alternador de 2–3 opções (botões nativos com aria-pressed; o s-press-button não reflete o estado
+ * controlado quando a tela muda o valor por fora — medido no navegador). */
+.ds-segmented {
+  display: inline-flex;
+  gap: 0.125rem;
+  padding: 0.125rem;
+  border-radius: 0.5rem;
+  background: #f1f1f1;
+}
+.ds-segmented__item {
+  border: 0;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  background: transparent;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 550;
+  color: #616161;
+  cursor: pointer;
+}
+.ds-segmented__item[aria-pressed='true'] {
+  background: #fff;
+  color: #303030;
+  box-shadow: 0 1px 0 rgba(26, 26, 26, 0.07), 0 0 0 1px rgba(26, 26, 26, 0.12);
+}
+.ds-segmented__item:disabled {
+  color: #b5b5b5;
+  cursor: default;
+}
+.ds-segmented__item:focus-visible {
+  outline: 2px solid #005bd3;
+  outline-offset: 1px;
+}
+/* ── fim Story 20.15b (PR B) ── */
+
+/* ── Story 20.15b (PR C) — resposta ao cliente, detalhe do e-mail e conversa ── */
+.ds-assist {
+  display: grid;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: #f7f7f7;
+  border: 1px solid #e3e3e3;
+  border-radius: 0.5rem;
+}
+.ds-assist__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ds-assist__row--end {
+  align-items: flex-end;
+}
+.ds-assist__grow {
+  flex: 1;
+  min-width: 12.5rem;
+}
+.ds-assist__macros {
+  display: grid;
+  gap: 0.5rem;
+  border-top: 1px solid #e3e3e3;
+  padding-top: 0.75rem;
+}
+.ds-detail__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.ds-detail__attachment {
+  display: grid;
+  gap: 0.25rem;
+  inline-size: 7.5rem;
+}
+.ds-detail__thumb {
+  display: block;
+  inline-size: 100%;
+  block-size: 7.5rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+.ds-detail__thumb--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f7f7;
+  color: #616161;
+  font-size: 0.75rem;
+}
+.ds-detail__reclassify {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+.ds-detail__reclassify-field {
+  min-width: 13.75rem;
+}
+.ds-detail__message,
+.ds-thread__message {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e3e3e3;
+  background: #f7f7f7;
+}
+.ds-thread__message {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.ds-detail__message[data-current='true'] {
+  background: #f1f6fe;
+}
+.ds-detail__summary,
+.ds-thread__summary {
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: #616161;
+}
+.ds-thread__summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  font-size: 0.8125rem;
+  color: #303030;
+}
+.ds-thread__subject {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 550;
+  color: #303030;
+}
+/* ── fim Story 20.15b (PR C) ── */
+
+/* ── Story 20.15c (PR A) — Reembolsos: tabela por colunas, conversa e decisão ── */
+.ds-screen .ds-table-state {
+  margin: var(--ds-space-400);
+}
+.ds-screen .ds-table-state--empty {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+.ds-screen s-table-row[data-highlighted='true'] .ds-dot-critical {
+  margin-right: var(--ds-space-200);
+}
+.ds-refund {
+  display: grid;
+  gap: 1rem;
+}
+.ds-refund__reco {
+  display: grid;
+  gap: 0.375rem;
+}
+.ds-refund__reco-value {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+.ds-refund__messages {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-refund__message {
+  display: flex;
+  justify-content: flex-start;
+}
+.ds-refund__message[data-align='right'] {
+  justify-content: flex-end;
+}
+.ds-refund__bubble {
+  max-width: 75%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  font-size: 0.8125rem;
+  background: #f1f1f1;
+  color: #303030;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.ds-refund__message[data-role='ai'] .ds-refund__bubble {
+  background: #eaf4ff;
+  color: #00527c;
+}
+.ds-refund__message[data-role='operator'] .ds-refund__bubble {
+  background: #303030;
+  color: #fff;
+}
+.ds-refund__role {
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.ds-refund__draft,
+.ds-refund__return {
+  display: grid;
+  gap: 0.75rem;
+}
+.ds-refund__draft-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ds-refund__provider {
+  margin-left: auto;
+  font-size: 0.6875rem;
+  color: #616161;
+}
+.ds-refund__return-fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+.ds-refund__return-fields > div {
+  min-width: 13.75rem;
+}
+.ds-refund__muted {
+  color: #616161;
+}
+.ds-refund__end {
+  display: flex;
+  justify-content: flex-end;
+}
+/* ── fim Story 20.15c (PR A) ── */
+
+/* ── Story 20.15c (PR B) — Disputas ── */
+/* Ponto de prazo crítico na mesma linha do selo (o s-link da linha é bloco). */
+.ds-screen s-table-cell > .ds-dot-critical + s-link {
+  display: inline-flex;
+  vertical-align: middle;
+}
+/* ── fim Story 20.15c (PR B) ── */
+
+/* ── Story 20.15c (PR C) — Configurações do Atendimento ── */
+.ds-screen .ds-config__rules {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.25rem;
+}
+.ds-screen .ds-config__state {
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-300);
+}
+.ds-screen .ds-config__range {
+  display: grid;
+  gap: var(--ds-space-200);
+}
+.ds-screen .ds-config__info {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ds-space-200);
+}
+.ds-screen .ds-config__preview {
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-radius-200);
+  overflow: hidden;
+}
+.ds-screen .ds-config__preview-frame {
+  display: block;
+  inline-size: 100%;
+  block-size: 13.75rem;
+  border: 0;
+  background: #fff;
+}
+/* ── fim Story 20.15c (PR C) ── */
+
+/* ── Story 20.13a (PR A) — campos compartilhados do editor de tema: link, produto, coleção, vários
+   produtos, lista editável, tamanho e texto rico ──
+   Sem `.ds-screen` nos seletores das listas suspensas: elas vivem num portal no <body> (fora do
+   PolarisGate) para escapar do overflow do painel — por isso os valores literais (os do Polaris 2,
+   iguais às variáveis `--ds-*`) e a fonte declarada no próprio menu. */
+.ds-picker {
+  position: relative;
+}
+.ds-picker__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-block-size: 2rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #8a8a8a;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #303030;
+  font: inherit;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  text-align: start;
+  cursor: pointer;
+}
+.ds-picker__trigger:hover {
+  border-color: #616161;
+  background: #fafafa;
+}
+.ds-picker__trigger:focus-visible {
+  outline: 0.125rem solid #005bd3;
+  outline-offset: 0.0625rem;
+}
+.ds-picker__trigger:disabled {
+  border-color: #ebebeb;
+  background: #f7f7f7;
+  color: #b5b5b5;
+  cursor: not-allowed;
+}
+.ds-picker__value {
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-picker__value--placeholder {
+  color: #616161;
+}
+.ds-picker__trigger:disabled .ds-picker__value--placeholder {
+  color: #b5b5b5;
+}
+.ds-picker__icons {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.25rem;
+  color: #4a4a4a;
+}
+.ds-picker__clear {
+  display: inline-flex;
+  border-radius: 0.25rem;
+  color: #8a8a8a;
+}
+.ds-picker__clear:hover,
+.ds-picker__clear:focus-visible {
+  color: #303030;
+  background: #f1f1f1;
+}
+.ds-picker__chevron {
+  display: inline-flex;
+  transition: transform 0.15s;
+}
+.ds-picker__chevron--open {
+  transform: rotate(180deg);
+}
+.ds-picker__hint {
+  display: block;
+  margin-block-start: 0.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-picker__menu {
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.25rem 0.375rem -0.125rem rgba(26, 26, 26, 0.2), 0 0 0 1px rgba(26, 26, 26, 0.07);
+  overflow: hidden;
+  color: #303030;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+.ds-picker__search-row {
+  padding: 0.5rem;
+  border-block-end: 1px solid #ebebeb;
+}
+.ds-picker__search {
+  box-sizing: border-box;
+  inline-size: 100%;
+  padding: 0.3125rem 0.625rem;
+  border: 1px solid #8a8a8a;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #303030;
+  font: inherit;
+}
+.ds-picker__search:focus-visible {
+  outline: 0.125rem solid #005bd3;
+  outline-offset: 0.0625rem;
+}
+.ds-picker__list {
+  max-block-size: 13rem;
+  margin: 0;
+  padding: 0.375rem;
+  overflow-y: auto;
+  list-style: none;
+}
+.ds-picker__status {
+  padding: 0.375rem 0.5rem;
+  color: #616161;
+  font-size: 0.75rem;
+}
+.ds-picker__status--error {
+  color: #8e0b21;
+}
+.ds-picker__option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-sizing: border-box;
+  inline-size: 100%;
+  padding: 0.375rem 0.5rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.ds-picker__option:hover,
+.ds-picker__option:focus-visible {
+  background: #f1f1f1;
+}
+.ds-picker__option--selected {
+  background: #ebebeb;
+  font-weight: 650;
+}
+.ds-picker__option--muted {
+  color: #616161;
+}
+.ds-picker__option:disabled {
+  background: transparent;
+  color: #b5b5b5;
+  cursor: default;
+}
+.ds-picker__option-label {
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-picker__option-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: #8a8a8a;
+}
+.ds-picker__chips {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.ds-picker__chip {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.125rem 0.125rem 0.5rem;
+  border-radius: 0.5rem;
+  background: #f1f1f1;
+}
+.ds-picker__chip-label {
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Rótulo + contador (vários produtos); rótulo + valor + restaurar (tamanho). */
+.ds-screen .ds-field-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ds-space-200);
+}
+.ds-screen .ds-field-head__end {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-100);
+}
+/* Texto rico (Tiptap): moldura de campo, barra de ferramentas e área de edição. */
+.ds-screen .ds-rte {
+  border: 1px solid #8a8a8a;
+  border-radius: var(--ds-radius-200);
+  background: #fff;
+  overflow: hidden;
+}
+.ds-screen .ds-rte:focus-within {
+  outline: 0.125rem solid #005bd3;
+  outline-offset: 0.0625rem;
+}
+.ds-screen .ds-rte__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.375rem 0.5rem;
+  border-block-end: 1px solid var(--ds-color-border);
+  background: var(--ds-color-surface-secondary);
+}
+.ds-screen .ds-rte__tool {
+  min-inline-size: 1.75rem;
+  padding: 0.25rem 0.5rem;
+  border: 0;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--ds-color-text);
+  font: inherit;
+  font-size: var(--ds-font-size-body);
+  line-height: 1.25rem;
+  cursor: pointer;
+}
+.ds-screen .ds-rte__tool:hover {
+  background: #e3e3e3;
+}
+.ds-screen .ds-rte__tool:focus-visible {
+  outline: 0.125rem solid #005bd3;
+  outline-offset: 0.0625rem;
+}
+.ds-screen .ds-rte__tool[aria-pressed='true'] {
+  background: #303030;
+  color: #fff;
+}
+.ds-screen .ds-rte__tool:disabled {
+  background: transparent;
+  color: #b5b5b5;
+  cursor: default;
+}
+.ds-screen .ds-rte__divider {
+  inline-size: 1px;
+  block-size: 1.25rem;
+  margin-inline: 0.25rem;
+  background: var(--ds-color-border);
+}
+.ds-screen .ds-rte__content {
+  min-block-size: 15rem;
+  padding: 0.75rem 1rem;
+  color: var(--ds-color-text);
+  font-size: var(--ds-font-size-body);
+  line-height: 1.5;
+  outline: none;
+}
+.ds-screen .ds-rte__content > * + * {
+  margin-block-start: 0.75em;
+}
+.ds-screen .ds-rte__content :is(h1, h2, h3) {
+  font-weight: 650;
+  line-height: 1.25;
+}
+.ds-screen .ds-rte__content h1 {
+  font-size: 1.25rem;
+}
+.ds-screen .ds-rte__content h2 {
+  font-size: 1.0625rem;
+}
+.ds-screen .ds-rte__content h3 {
+  font-size: 0.9375rem;
+}
+.ds-screen .ds-rte__content :is(ul, ol) {
+  padding-inline-start: 1.25rem;
+}
+.ds-screen .ds-rte__content ul {
+  list-style: disc;
+}
+.ds-screen .ds-rte__content ol {
+  list-style: decimal;
+}
+.ds-screen .ds-rte__content blockquote {
+  padding-inline-start: 0.75rem;
+  border-inline-start: 0.1875rem solid var(--ds-color-border);
+  color: var(--ds-color-text-secondary);
+}
+.ds-screen .ds-rte__content code {
+  padding: 0.0625rem 0.25rem;
+  border-radius: 0.25rem;
+  background: #f1f1f1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+}
+.ds-screen .ds-rte__content pre {
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--ds-radius-200);
+  background: #f1f1f1;
+  overflow-x: auto;
+}
+.ds-screen .ds-rte__content pre code {
+  padding: 0;
+  background: transparent;
+}
+.ds-screen .ds-rte__content hr {
+  border: 0;
+  border-block-start: 1px solid var(--ds-color-border);
+}
+/* ── fim Story 20.13a (PR A) ── */

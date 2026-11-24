@@ -1,0 +1,8 @@
+{
+  "isReal": false,
+  "represents": "Widget Kaching Bundles isolado — 3 .kaching-bundles__bar[data-deal-bar-id] com preços e compare-at.",
+  "notes": "Fixture SINTÉTICA representativa do widget Kaching Bundles (bepurex/klensia). Baseada em análise do processor+seletores — não é HTML clonado real. Klensia real é a única evidência de landing com widget Kaching em produção — validação end-to-end vem do runtime dela, não desta fixture. Nota importante: fixture NÃO contém script[data-cc-pdp-product-json] (esse é tema Aurivita — processor:2354). Alteração introduzida no closure 10.3 pra manter coerência semântica.",
+  "changelog": [
+    "2026-09-27 (closure 10.3): removido script[data-cc-pdp-product-json] pra refletir que Kaching real (Klensia) não tem esse marker; adicionado campo represents."
+  ]
+}

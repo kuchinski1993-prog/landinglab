@@ -1,0 +1,20 @@
+{
+  "isReal": false,
+  "represents": "PSS Product Studio PURO — sem widget Kaching Bundles. Baseado apenas em seletores do §7.6/§7.5 do apply-bundle processor.",
+  "createdAt": "2026-09-27 (closure 10.3)",
+  "notes": "Fixture sintética criada explicitamente pra provar false-positive protection: Kaching adapter DEVE retornar score=0 aqui (nenhum bundle widget presente). Se um dia landing PSS PURA real aparecer em produção, validar E2E antes de trocar isReal=true.",
+  "markersIncluded": [
+    ".pss-gallery",
+    ".pss-main-slide",
+    ".pss-thumb",
+    ".pss-arrow-prev/.pss-arrow-next",
+    ".pss-atc-button",
+    ".pss-accordion",
+    ".pss-accordion-trigger",
+    ".pss-accordion-panel"
+  ],
+  "markersExcluded": [
+    ".kaching-bundles__bar (intencional — este é widget Kaching, não PSS)",
+    "script[data-cc-pdp-product-json] (intencional — este é Aurivita)"
+  ]
+}

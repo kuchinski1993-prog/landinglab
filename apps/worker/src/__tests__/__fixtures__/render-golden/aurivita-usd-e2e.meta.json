@@ -1,0 +1,4 @@
+{
+  "isReal": false,
+  "notes": "Fixture SINTÉTICA E2E para task #87. Estado inicial: USD (simula clone Aurivita/Kaching cru, pré-apply-bundle). Após renderProductJson com contexto EUR, todos os campos currency/moneyFormat/priceFormatted devem virar EUR. Prova que preços italianos não voltam pra USD."
+}

@@ -1,0 +1,7 @@
+{
+  "isReal": false,
+  "represents": "Klensia hybrid: PSS Product Studio theme (§7.6 do processor) + widget Kaching Bundles embutido. NÃO representa PSS puro.",
+  "renamedFrom": "pss-minimal (2026-09-27, closure 10.3)",
+  "notes": "Contém tanto seletores PSS (.pss-gallery, .pss-arrow, .pss-atc-button, .pss-accordion) quanto Kaching (.kaching-bundles__bar) intencionalmente — reflete a realidade da Klensia em produção onde o widget Kaching é componente embutido em página PSS. Kaching adapter DEVE detectar como confident nesta fixture — comportamento correto. Para PSS puro, ver pss-pure-minimal.",
+  "distinctionRationale": "Page/theme identity (PSS) vs embedded component identity (Kaching Bundles) — ver ADR-001 §Anexo B (closure 10.3)."
+}

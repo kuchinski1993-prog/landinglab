@@ -1,0 +1,475 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1780452288192,
+      "tag": "0000_flawless_longshot",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1812345600000,
+      "tag": "0001_theme_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1812345700000,
+      "tag": "0002_stores_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1812345800000,
+      "tag": "0003_mirror_ids",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1812345900000,
+      "tag": "0004_tracking_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1812346000000,
+      "tag": "0005_stores_extend",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1812346100000,
+      "tag": "0006_store_id_backfill",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1812346200000,
+      "tag": "0007_factory_jobs",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1812346300000,
+      "tag": "0008_refund_tickets",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1812346400000,
+      "tag": "0009_theme_tokens",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1812346500000,
+      "tag": "0010_theme_sections_page",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1812346600000,
+      "tag": "0011_theme_sections_blocks",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1812346700000,
+      "tag": "0012_pages",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1812346800000,
+      "tag": "0013_reviews_questions",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1812346900000,
+      "tag": "0014_product_images_supabase_path",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1812347000000,
+      "tag": "0015_product_images_color",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1812347100000,
+      "tag": "0016_product_variants_option_names",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1812347200000,
+      "tag": "0017_product_groups",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1812347300000,
+      "tag": "0018_email_templates",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1812347400000,
+      "tag": "0019_tracking_sessions",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1812347500000,
+      "tag": "0020_orders",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1812347600000,
+      "tag": "0021_refund_tickets_ai_intent",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1812347700000,
+      "tag": "0022_refund_tickets_ai_signals",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1812347800000,
+      "tag": "0023_inbound_emails",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1812347900000,
+      "tag": "0024_inbound_ai_pipeline",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1812348000000,
+      "tag": "0025_ack_and_transactional",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1812348100000,
+      "tag": "0026_refund_ticket_source",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1812348200000,
+      "tag": "0027_customer_notes",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1812348300000,
+      "tag": "0028_inbound_macros",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1812348400000,
+      "tag": "0029_notifications",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1812348500000,
+      "tag": "0030_shipment_events",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1812348600000,
+      "tag": "0031_orders_fulfillment",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1812348700000,
+      "tag": "0032_disputes",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1812348800000,
+      "tag": "0033_stores_settings",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1812348900000,
+      "tag": "0034_size_guides",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1812349000000,
+      "tag": "0035_collections",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1812349100000,
+      "tag": "0036_missing_columns",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1812349200000,
+      "tag": "0037_product_pairings",
+      "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1812349300000,
+      "tag": "0038_products_tech_sheet",
+      "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "7",
+      "when": 1812349400000,
+      "tag": "0039_theme_templates",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1812349500000,
+      "tag": "0040_color_schemes",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1812349600000,
+      "tag": "0041_price_sync_columns",
+      "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1812349700000,
+      "tag": "0042_leads",
+      "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1784069575993,
+      "tag": "0043_silky_white_queen",
+      "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1784500000000,
+      "tag": "0044_ai_usage_log",
+      "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1786000000000,
+      "tag": "0045_l0i_landing_page_system",
+      "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "7",
+      "when": 1786100000000,
+      "tag": "0046_l0i_arch_improvements",
+      "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1786200000000,
+      "tag": "0047_landinglab_ai_foundation",
+      "breakpoints": true
+    },
+    {
+      "idx": 48,
+      "version": "7",
+      "when": 1786300000000,
+      "tag": "0048_landinglab_copy_squad",
+      "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "7",
+      "when": 1786400000000,
+      "tag": "0049_landinglab_visual_squad",
+      "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "7",
+      "when": 1786500000000,
+      "tag": "0050_landinglab_html_build",
+      "breakpoints": true
+    },
+    {
+      "idx": 51,
+      "version": "7",
+      "when": 1786600000000,
+      "tag": "0051_landinglab_deploy",
+      "breakpoints": true
+    },
+    {
+      "idx": 52,
+      "version": "7",
+      "when": 1786700000000,
+      "tag": "0052_landinglab_generation_mode_cloned",
+      "breakpoints": true
+    },
+    {
+      "idx": 53,
+      "version": "7",
+      "when": 1786800000000,
+      "tag": "0053_landinglab_clone_metadata",
+      "breakpoints": true
+    },
+    {
+      "idx": 54,
+      "version": "7",
+      "when": 1786900000000,
+      "tag": "0054_landinglab_domain_bindings",
+      "breakpoints": true
+    },
+    {
+      "idx": 55,
+      "version": "7",
+      "when": 1788556100000,
+      "tag": "0055_tracker_campaigns",
+      "breakpoints": true
+    },
+    {
+      "idx": 56,
+      "version": "7",
+      "when": 1788556200000,
+      "tag": "0056_tracker_streams",
+      "breakpoints": true
+    },
+    {
+      "idx": 57,
+      "version": "7",
+      "when": 1788556300000,
+      "tag": "0057_tracker_clicks",
+      "breakpoints": true
+    },
+    {
+      "idx": 58,
+      "version": "7",
+      "when": 1788556400000,
+      "tag": "0058_tracker_access_rules",
+      "breakpoints": true
+    },
+    {
+      "idx": 60,
+      "version": "7",
+      "when": 1789045000000,
+      "tag": "0060_landing_cta_config",
+      "breakpoints": true
+    },
+    {
+      "idx": 62,
+      "version": "7",
+      "when": 1789150000000,
+      "tag": "0062_landing_kind_and_parent",
+      "breakpoints": true
+    },
+    {
+      "idx": 63,
+      "version": "7",
+      "when": 1789200000000,
+      "tag": "0063_landing_translation_status",
+      "breakpoints": true
+    },
+    {
+      "idx": 64,
+      "version": "7",
+      "when": 1789581000000,
+      "tag": "0064_landing_schema_drift_fix",
+      "breakpoints": true
+    },
+    {
+      "idx": 65,
+      "version": "7",
+      "when": 1789630000000,
+      "tag": "0065_landing_wizard_v2",
+      "breakpoints": true
+    },
+    {
+      "idx": 66,
+      "version": "7",
+      "when": 1790140000000,
+      "tag": "0066_skeleton_mode_landing_pages",
+      "breakpoints": true
+    },
+    {
+      "idx": 67,
+      "version": "7",
+      "when": 1790140100000,
+      "tag": "0067_skeleton_mode_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 68,
+      "version": "7",
+      "when": 1790530000000,
+      "tag": "0075_landing_kind_add_pdp_derived",
+      "breakpoints": true
+    }
+  ]
+}

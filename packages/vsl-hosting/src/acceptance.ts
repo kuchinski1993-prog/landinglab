@@ -1,0 +1,4 @@
+import { VSL_LOCALES, type VslLocale } from './variants.js';
+export type VslAcceptanceRecord = { locale: VslLocale; pageId: string; revisionId: string; reviewed: boolean; evidence: string };
+export function buildVslLocaleMatrix(records: VslAcceptanceRecord[]) { const by=new Map<VslLocale,VslAcceptanceRecord>(); for(const record of records){ if(by.has(record.locale)) throw new Error('Duplicate VSL locale evidence'); by.set(record.locale,record); } return VSL_LOCALES.map(locale=>({locale,record:by.get(locale) ?? null})); }
+export function assertVslIsolation(records: VslAcceptanceRecord[]) { const pages=new Set(records.map(x=>x.pageId)); const revisions=new Set(records.map(x=>x.revisionId)); if(pages.size!==records.length||revisions.size!==records.length) throw new Error('VSL acceptance isolation violated'); if(records.some(x=>!x.reviewed||!x.evidence)) throw new Error('VSL acceptance evidence incomplete'); return true; }

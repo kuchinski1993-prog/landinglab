@@ -1,0 +1,769 @@
+/*
+ * Checkout Stripe da LandingLab — visual do checkout Shopify one-page (Story 15.7).
+ * Medidas do checkout de referência (1440px): header 65px, grade de 980px
+ * centrada (formulário 499px + 40px | 1px | 40px + resumo 400px), campos ~49px,
+ * raio 12px, borda #DEDEDE, texto #000 / secundário rgba(0,0,0,.56).
+ */
+
+.page {
+  --ll-text: #000;
+  --ll-text-subdued: rgba(0, 0, 0, 0.56);
+  --ll-text-control: rgb(93, 93, 93);
+  --ll-border: #dedede;
+  --ll-divider: rgb(223, 223, 223);
+  --ll-bg-subdued: #f5f5f5;
+  --ll-bg-option: #f6f6f6;
+  --ll-accent: #005bd1;
+  --ll-radius: 12px;
+  --ll-radius-small: 8px;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--ll-text);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Header ---------- */
+
+.header {
+  border-bottom: 1px solid var(--ll-divider);
+  background: #fff;
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: calc(980px + 42px);
+  min-height: 64px;
+  margin: 0 auto;
+  padding: 8px 21px;
+}
+
+/* Story 15.7 — logo centralizado: a sacola fica na 3ª coluna (sem sobrepor). */
+.headerInner[data-align='center'] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
+.headerInner[data-align='center'] .brand {
+  grid-column: 2;
+  justify-content: center;
+}
+
+.headerInner[data-align='center'] .bagIcon {
+  grid-column: 3;
+  justify-self: end;
+}
+
+/* Logo à direita: logo e sacola juntos no fim, com espaço entre eles. */
+.headerInner[data-align='right'] {
+  justify-content: flex-end;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 22px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Altura configurada no editor (--ll-logo-h); a largura segue a proporção. */
+.brandLogo {
+  display: block;
+  height: var(--ll-logo-h, 32px);
+  width: auto;
+  max-width: min(360px, 60vw);
+  object-fit: contain;
+}
+
+.bagIcon {
+  flex: 0 0 auto;
+  display: block;
+  color: var(--ll-text-control);
+}
+
+.chevron {
+  display: inline-block;
+  flex: 0 0 auto;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* ---------- Grade de 2 colunas ---------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, calc(50% + 49px)) minmax(0, 1fr);
+  min-height: calc(100vh - 65px);
+}
+
+.main {
+  display: flex;
+  justify-content: flex-end;
+  padding: 38px 40px 0 21px;
+}
+
+.mainInner {
+  width: 100%;
+  max-width: 499px;
+}
+
+.aside {
+  background: var(--ll-bg-subdued);
+  border-left: 1px solid var(--ll-divider);
+  padding: 38px 21px 38px 40px;
+}
+
+.asideInner {
+  width: 100%;
+  max-width: 400px;
+  position: sticky;
+  top: 38px;
+}
+
+/* Barra "Resumo do pedido" e bloco "Total" — só no mobile. */
+.summaryToggle,
+.summaryMobile,
+.mobileTotal {
+  display: none;
+}
+
+/* ---------- Seções do formulário ---------- */
+
+.express {
+  margin-bottom: 19px;
+}
+
+.expressTitle {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18.9px;
+  color: var(--ll-text-subdued);
+  text-align: center;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 21px;
+  color: var(--ll-text-subdued);
+  font-size: 14px;
+  line-height: 18.9px;
+  text-transform: uppercase;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ll-divider);
+}
+
+.section + .section {
+  margin-top: 32px;
+}
+
+.sectionTitle {
+  margin: 0 0 14px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.subsectionTitle {
+  margin: 24px 0 14px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 19.2px;
+}
+
+.secure {
+  margin: 4px 0 14px;
+  font-size: 14px;
+  line-height: 18.9px;
+  color: var(--ll-text-subdued);
+}
+
+/* Section title + subtítulo colados (Payment / "All transactions…"). */
+.sectionTitle + .secure {
+  margin-top: -10px;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 18.9px;
+  cursor: pointer;
+}
+
+.checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: var(--ll-radius-small);
+  background: #fff center / 14px 14px no-repeat;
+  box-shadow: inset 0 0 0 1px var(--ll-border);
+  cursor: pointer;
+}
+
+.checkbox:checked {
+  background-color: var(--ll-text-control);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='m3 7.2 2.6 2.6L11 4.4' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  box-shadow: none;
+}
+
+.checkbox:focus-visible,
+.radio:focus-visible {
+  outline: 2px solid var(--ll-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Shipping method ---------- */
+
+.shippingEmpty {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  border-radius: var(--ll-radius);
+  background: var(--ll-bg-option);
+}
+
+.shippingEmpty p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 18.9px;
+  color: var(--ll-text-subdued);
+}
+
+.shippingList {
+  border: 1px solid var(--ll-border);
+  border-radius: var(--ll-radius);
+  overflow: hidden;
+}
+
+.shippingOption {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  font-size: 14px;
+  line-height: 18.9px;
+  cursor: pointer;
+}
+
+.shippingOption + .shippingOption {
+  border-top: 1px solid var(--ll-border);
+}
+
+.shippingOptionActive {
+  background: var(--ll-bg-option);
+  box-shadow: inset 0 0 0 1px var(--ll-text-control);
+}
+
+.shippingOptionActive:first-child {
+  border-radius: var(--ll-radius) var(--ll-radius) 0 0;
+}
+
+.shippingOptionActive:last-child {
+  border-radius: 0 0 var(--ll-radius) var(--ll-radius);
+}
+
+.shippingOptionActive:only-child {
+  border-radius: var(--ll-radius);
+}
+
+.radio {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 1px solid var(--ll-border);
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
+.radio:checked {
+  border: 6px solid var(--ll-text-control);
+}
+
+.shippingLabel {
+  flex: 1;
+}
+
+.shippingDays {
+  display: block;
+  font-size: 12px;
+  line-height: 16.2px;
+  color: var(--ll-text-subdued);
+}
+
+.shippingPrice {
+  white-space: nowrap;
+}
+
+.shippingFree {
+  white-space: nowrap;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ---------- Botão e rodapé ---------- */
+
+.payButton {
+  display: block;
+  width: 100%;
+  min-height: 50px;
+  margin-top: 32px;
+  padding: 14px;
+  border: 0;
+  border-radius: var(--ll-radius);
+  background: rgb(1, 1, 1);
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18.9px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.payButton:hover:not(:disabled) {
+  background: #333;
+}
+
+.payButton:focus-visible {
+  outline: 2px solid var(--ll-accent);
+  outline-offset: 2px;
+}
+
+.payButton:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.error {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid #fdd8d8;
+  border-radius: var(--ll-radius);
+  background: #fef6f6;
+  color: #c81919;
+  font-size: 14px;
+  line-height: 18.9px;
+}
+
+.loading {
+  padding: 40px 0;
+  text-align: center;
+  color: var(--ll-text-subdued);
+}
+
+.policyFooter {
+  margin-top: 61px;
+  padding-bottom: 38px;
+}
+
+.policyFooter ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.policyFooter a {
+  color: var(--ll-text-control);
+  font-size: 14px;
+  line-height: 18.9px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.policyFooter a:hover {
+  color: var(--ll-text);
+}
+
+/* ---------- Resumo do pedido ---------- */
+
+.summary {
+  font-size: 14px;
+  line-height: 18.9px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.item + .item {
+  margin-top: 16px;
+}
+
+.thumb {
+  position: relative;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--ll-radius-small);
+  background: #fff;
+}
+
+/* Story 15.7 — sem imagem enviada no editor: quadro neutro (mesma moldura). */
+.thumbPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--ll-radius-small) - 1px);
+  background: #f2f2f2;
+  color: rgba(0, 0, 0, 0.32);
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: calc(var(--ll-radius-small) - 1px);
+}
+
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 20px;
+  text-align: center;
+}
+
+.itemText {
+  flex: 1;
+  min-width: 0;
+}
+
+.itemTitle {
+  margin: 0;
+  font-size: 14px;
+  line-height: 18.9px;
+}
+
+.itemSub {
+  display: block;
+  margin: 0;
+  font-size: 12px;
+  line-height: 16.2px;
+  color: var(--ll-text-subdued);
+}
+
+.itemPrice {
+  font-size: 14px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.compareAt {
+  display: block;
+  color: var(--ll-text-subdued);
+  text-decoration: line-through;
+  font-size: 12px;
+  line-height: 16.2px;
+}
+
+.totals {
+  margin-top: 21px;
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.totalRow + .totalRow {
+  margin-top: 5px;
+}
+
+.muted {
+  color: var(--ll-text-subdued);
+}
+
+.grandTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 16px;
+  font-size: 18px;
+  line-height: 24.3px;
+}
+
+.grandTotal strong {
+  font-weight: 600;
+}
+
+.grandTotalValue {
+  white-space: nowrap;
+}
+
+.currencyCode {
+  margin-right: 6px;
+  font-size: 12px;
+  line-height: 16.2px;
+  font-weight: 400;
+  color: var(--ll-text-subdued);
+}
+
+/* Story 15.6 — resumo da assinatura (recorrência, frete só na 1ª fatura), discreto. */
+.subscriptionNote {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ll-divider);
+}
+
+.subscriptionNote strong {
+  font-weight: 600;
+}
+
+/* ---------- Página de obrigado / expirado ---------- */
+
+.center {
+  max-width: 560px;
+  margin: 64px auto;
+  padding: 0 21px;
+  text-align: center;
+}
+
+.thanksHead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.thanksIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--ll-text-control);
+  border-radius: 50%;
+  color: var(--ll-text-control);
+}
+
+.thanksOrder {
+  margin: 0;
+  font-size: 14px;
+  line-height: 18.9px;
+  color: var(--ll-text-subdued);
+}
+
+.thanksTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.thanksCard {
+  padding: 16px;
+  border: 1px solid var(--ll-border);
+  border-radius: var(--ll-radius);
+}
+
+.thanksCard p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 18.9px;
+}
+
+/* ---------- Mobile (≤ 999px, como o Shopify) ---------- */
+
+@media (max-width: 999px) {
+  .headerInner {
+    max-width: calc(560px + 28px);
+    padding: 8px 14px;
+  }
+
+  /* Mobile: altura até 40px e no máximo ~60% da largura da tela. */
+  .brandLogo {
+    height: min(var(--ll-logo-h, 32px), 40px);
+    max-width: 60vw;
+  }
+
+  .layout {
+    display: block;
+    min-height: 0;
+  }
+
+  .aside {
+    display: none;
+  }
+
+  .main {
+    justify-content: center;
+    padding: 21px 14px 0;
+  }
+
+  .mainInner {
+    max-width: 560px;
+  }
+
+  .summaryToggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 63px;
+    margin: 0;
+    padding: 0 max(14px, calc((100% - 560px) / 2));
+    border: 0;
+    border-bottom: 1px solid var(--ll-divider);
+    background: var(--ll-bg-subdued);
+    color: var(--ll-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .summaryToggleLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    line-height: 18.9px;
+    color: var(--ll-text-control);
+  }
+
+  .summaryToggleTotal {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24.3px;
+  }
+
+  .summaryMobile[data-open='true'] {
+    display: block;
+    padding: 21px max(14px, calc((100% - 560px) / 2));
+    border-bottom: 1px solid var(--ll-divider);
+    background: var(--ll-bg-subdued);
+  }
+
+  .mobileTotal {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 32px 0 16px;
+  }
+
+  .mobileTotal + .payButton {
+    margin-top: 0;
+  }
+
+  .mobileTotalThumb {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: var(--ll-radius-small);
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .mobileTotalThumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .mobileTotalText {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .mobileTotalText strong {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24.3px;
+  }
+
+  .mobileTotalText span {
+    font-size: 14px;
+    line-height: 18.9px;
+    color: var(--ll-text-subdued);
+  }
+
+  .mobileTotalValue {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ll-text);
+    font: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .mobileTotalValue strong {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24.3px;
+  }
+
+  .currencyPill {
+    padding: 1px 4px;
+    border-radius: 4px;
+    background: var(--ll-bg-option);
+    color: var(--ll-text-subdued);
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 14px;
+  }
+
+  .policyFooter {
+    margin-top: 32px;
+  }
+}

@@ -1,0 +1,160 @@
+<!--
+  Fixture: bepurex-landing.html
+  Source: sanitized replica of a real Bepurex (cc-*) landing PDP (short-form product page).
+  Purpose: SM-2.1 skeleton-extractor cheerio path unit tests + theme fingerprint = 'bepurex'.
+  Sanitization applied:
+    - No real customer names, emails, phones
+    - No API tokens / analytics IDs / GTM containers
+    - Prices in EUR are illustrative
+    - CDN URLs replaced with cdn.example.com
+  Theme markers preserved: .cc-pdp__main, .cc-pdp__thumbs, .cc-pdp-offer, .cc-faq__item,
+    .cc-review-card, .cc-timeline, .cc-guarantee (from landinglab-fixes-injector.ts)
+-->
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bepurex Formula — Integratore naturale energia</title>
+  <meta name="description" content="Integratore naturale per l'energia quotidiana. Formula standardizzata, spedizione gratuita, garanzia 30 giorni.">
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="Bepurex Formula — Integratore naturale">
+  <meta property="og:image" content="https://cdn.example.com/bepurex-landing/hero.jpg">
+  <link rel="canonical" href="https://example.com/bepurex/landing-it">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Bepurex Formula",
+    "image": "https://cdn.example.com/bepurex-landing/hero.jpg",
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "EUR",
+      "lowPrice": "49.00",
+      "highPrice": "234.00"
+    }
+  }
+  </script>
+</head>
+<body class="template-product cc-theme cc-landing">
+
+  <header class="cc-header">
+    <a class="cc-header__logo" href="/">
+      <img src="https://cdn.example.com/bepurex-landing/logo.svg" alt="Bepurex" width="140" height="32">
+    </a>
+  </header>
+
+  <main class="cc-pdp">
+
+    <section class="cc-pdp__hero">
+      <div class="cc-pdp__main">
+        <picture>
+          <img src="https://cdn.example.com/bepurex-landing/main.jpg" alt="Bepurex Formula flacone" width="800" height="800" loading="eager">
+        </picture>
+      </div>
+      <div class="cc-pdp__thumbs">
+        <picture><img src="https://cdn.example.com/bepurex-landing/thumb1.jpg" alt="Etichetta prodotto" width="120" height="120" loading="lazy"></picture>
+        <picture><img src="https://cdn.example.com/bepurex-landing/thumb2.jpg" alt="Ingredienti in evidenza" width="120" height="120" loading="lazy"></picture>
+        <picture><img src="https://cdn.example.com/bepurex-landing/thumb3.jpg" alt="Confezione lifestyle" width="120" height="120" loading="lazy"></picture>
+      </div>
+      <div class="cc-pdp__info">
+        <h1 class="cc-pdp__title">Bepurex Formula — Energia naturale ogni giorno</h1>
+        <p class="cc-pdp__subtitle">Estratti standardizzati per il supporto energetico. Vegan, senza glutine, senza OGM.</p>
+        <div class="cc-pdp__stars" aria-label="4.8 su 5">★★★★★ <span>4.8 (2.341 recensioni)</span></div>
+      </div>
+    </section>
+
+    <section class="cc-pdp__offers">
+      <a class="cc-pdp-offer" href="/cart/add?id=1x" data-variant-id="1x">
+        <span class="cc-pdp-offer__title">1 flacone (30 giorni)</span>
+        <span class="cc-pdp-offer__price">€49</span>
+        <span class="cc-pdp-offer__qty">30 capsule</span>
+      </a>
+      <a class="cc-pdp-offer cc-pdp-offer--best" href="/cart/add?id=3x" data-variant-id="3x">
+        <span class="cc-pdp-offer__badge">Più venduto</span>
+        <span class="cc-pdp-offer__title">3 flaconi (90 giorni)</span>
+        <span class="cc-pdp-offer__price">€117</span>
+        <span class="cc-pdp-offer__compare">€147</span>
+        <span class="cc-pdp-offer__qty">90 capsule</span>
+      </a>
+      <a class="cc-pdp-offer" href="/cart/add?id=6x" data-variant-id="6x">
+        <span class="cc-pdp-offer__title">6 flaconi (180 giorni)</span>
+        <span class="cc-pdp-offer__price">€234</span>
+        <span class="cc-pdp-offer__compare">€294</span>
+        <span class="cc-pdp-offer__qty">180 capsule</span>
+      </a>
+    </section>
+
+    <section class="cc-benefits">
+      <h2>Perché Bepurex?</h2>
+      <ul class="cc-bullets">
+        <li class="cc-bullets__item">Supporto energetico giornaliero</li>
+        <li class="cc-bullets__item">Estratti standardizzati con studi clinici</li>
+        <li class="cc-bullets__item">Vegan, senza glutine, senza OGM</li>
+        <li class="cc-bullets__item">Prodotto in Italia sotto controllo qualità</li>
+      </ul>
+    </section>
+
+    <section class="cc-timeline">
+      <h2 class="cc-timeline__heading">Cosa aspettarsi</h2>
+      <div class="cc-timeline__swiper">
+        <div class="cc-timeline__slide" data-week="1">
+          <h3 class="cc-timeline__label">Settimana 1</h3>
+          <p class="cc-timeline__body">Il corpo inizia ad assimilare gli estratti.</p>
+        </div>
+        <div class="cc-timeline__slide" data-week="2">
+          <h3 class="cc-timeline__label">Settimana 2</h3>
+          <p class="cc-timeline__body">Primi segnali di maggiore energia al mattino.</p>
+        </div>
+        <div class="cc-timeline__slide" data-week="6">
+          <h3 class="cc-timeline__label">Settimana 6</h3>
+          <p class="cc-timeline__body">Effetto pieno del ciclo consigliato.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cc-reviews">
+      <h2>Recensioni verificate</h2>
+      <div class="cc-review-list">
+        <article class="cc-review-card">
+          <div class="cc-review-card__stars">★★★★★</div>
+          <p class="cc-review-card__body">Ottimo prodotto, spedizione rapida.</p>
+          <footer class="cc-review-card__author">F. C. — Torino</footer>
+        </article>
+        <article class="cc-review-card">
+          <div class="cc-review-card__stars">★★★★★</div>
+          <p class="cc-review-card__body">Dopo un mese mi sento meglio. Ordinerò di nuovo.</p>
+          <footer class="cc-review-card__author">A. B. — Bologna</footer>
+        </article>
+      </div>
+    </section>
+
+    <section class="cc-faq">
+      <h2>FAQ</h2>
+      <details class="cc-faq__item">
+        <summary>Come si assume?</summary>
+        <div class="cc-faq__answer">1 capsula al giorno con un bicchiere d'acqua, preferibilmente al mattino.</div>
+      </details>
+      <details class="cc-faq__item">
+        <summary>Quanto dura una confezione?</summary>
+        <div class="cc-faq__answer">Una confezione da 30 capsule copre un mese di utilizzo.</div>
+      </details>
+      <details class="cc-faq__item">
+        <summary>Rimborso se non funziona?</summary>
+        <div class="cc-faq__answer">Sì, 30 giorni soddisfatti o rimborsati.</div>
+      </details>
+    </section>
+
+    <section class="cc-guarantee">
+      <img src="https://cdn.example.com/bepurex-landing/badge-30d.svg" alt="Garanzia 30 giorni" width="80" height="80" loading="lazy">
+      <p>Garanzia soddisfatti o rimborsati 30 giorni · Spedizione gratuita in Italia · Pagamenti sicuri</p>
+    </section>
+
+  </main>
+
+  <footer class="cc-footer">
+    <p>© Bepurex — Integratori naturali. Non è un medicinale.</p>
+  </footer>
+
+</body>
+</html>

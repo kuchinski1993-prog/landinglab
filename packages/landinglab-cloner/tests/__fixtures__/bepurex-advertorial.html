@@ -1,0 +1,184 @@
+<!--
+  Fixture: bepurex-advertorial.html
+  Source: sanitized replica of a real Bepurex (cc-*) advertorial landing.
+  Purpose: SM-2.1 skeleton-extractor cheerio path unit tests + theme fingerprint = 'bepurex'.
+  Sanitization applied:
+    - No real customer names, emails, phones
+    - No API tokens / analytics IDs / GTM containers
+    - Prices in EUR are illustrative
+    - CDN URLs replaced with placeholder cdn.example.com
+  Theme markers preserved: .cc-timeline, .cc-doctors-see, .cc-faq__item, .cc-review-card,
+    .cc-cis__image, .cc-pdp-offer, .cc-expert-quote (from packages/landinglab-cloner/src/agents/landinglab-fixes-injector.ts)
+-->
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bepurex Advertorial — Testimonianza integratori naturali</title>
+  <meta name="description" content="Come Marco ha ritrovato energia in 6 settimane. Storia advertorial Bepurex.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Bepurex Advertorial — Testimonianza">
+  <meta property="og:image" content="https://cdn.example.com/bepurex/hero-1200.jpg">
+  <link rel="canonical" href="https://example.com/bepurex/advertorial-it">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Ho ritrovato la mia energia — la storia di Marco",
+    "image": "https://cdn.example.com/bepurex/hero-1200.jpg"
+  }
+  </script>
+</head>
+<body class="template-page cc-theme cc-advertorial">
+
+  <header class="cc-header">
+    <a class="cc-header__logo" href="/">
+      <img src="https://cdn.example.com/bepurex/logo.svg" alt="Bepurex" width="140" height="32">
+    </a>
+  </header>
+
+  <main class="cc-advertorial__body">
+
+    <section class="cc-hero">
+      <h1 class="cc-hero__headline">Ho ritrovato la mia energia — la storia di Marco, 54 anni</h1>
+      <p class="cc-hero__subhead">Come un semplice integratore naturale mi ha aiutato in 6 settimane, senza cambiare la mia dieta.</p>
+      <picture class="cc-hero__media">
+        <source srcset="https://cdn.example.com/bepurex/hero-1200.jpg" media="(min-width: 768px)">
+        <img src="https://cdn.example.com/bepurex/hero-mobile.jpg" alt="Marco sorridente al parco" width="750" height="500" loading="eager">
+      </picture>
+    </section>
+
+    <section class="cc-cis cc-cis--intro">
+      <div class="cc-cis__body">
+        <p><strong>Sono Marco Rossi</strong> e ho 54 anni. Un anno fa mi svegliavo già stanco. Un amico mi ha parlato di un integratore naturale — l'ho provato senza aspettative.</p>
+      </div>
+      <div class="cc-cis__image">
+        <img src="https://cdn.example.com/bepurex/marco-before.jpg" alt="Marco stanco a casa" width="600" height="400" loading="lazy">
+      </div>
+    </section>
+
+    <section class="cc-timeline">
+      <h2 class="cc-timeline__heading">Il mio percorso — settimana dopo settimana</h2>
+      <div class="cc-timeline__swiper">
+        <div class="cc-timeline__slide" data-week="1">
+          <h3 class="cc-timeline__label">Settimana 1</h3>
+          <picture class="cc-timeline__media">
+            <img src="https://cdn.example.com/bepurex/week1.jpg" alt="Settimana 1" width="600" height="400" loading="lazy">
+          </picture>
+          <p class="cc-timeline__body">I primi giorni non ho notato molto, ma dopo 5 giorni la mattina era diversa: meno pesantezza al risveglio.</p>
+        </div>
+        <div class="cc-timeline__slide" data-week="2">
+          <h3 class="cc-timeline__label">Settimana 2</h3>
+          <picture class="cc-timeline__media">
+            <img src="https://cdn.example.com/bepurex/week2.jpg" alt="Settimana 2" width="600" height="400" loading="lazy">
+          </picture>
+          <p class="cc-timeline__body">Camminate al parco senza fiatone. Mia moglie mi ha detto: "Sei tornato quello di prima".</p>
+        </div>
+        <div class="cc-timeline__slide" data-week="6">
+          <h3 class="cc-timeline__label">Settimana 6</h3>
+          <picture class="cc-timeline__media">
+            <img src="https://cdn.example.com/bepurex/week6.jpg" alt="Settimana 6" width="600" height="400" loading="lazy">
+          </picture>
+          <p class="cc-timeline__body">Ho ripreso il tennis dopo 4 anni. Il mio medico mi ha detto che i valori sono ottimi.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cc-doctors-see">
+      <h2 class="cc-doctors-see__heading">Cosa dicono i medici</h2>
+      <div class="cc-doctors-see__panels">
+        <article class="cc-expert-quote">
+          <div class="cc-expert-quote__image">
+            <img src="https://cdn.example.com/bepurex/doctor-1.jpg" alt="Dr. A. Bianchi" width="120" height="120" loading="lazy">
+          </div>
+          <blockquote>
+            <p>Formule con estratti standardizzati come questa possono supportare l'energia quotidiana quando abbinate a uno stile di vita sano.</p>
+            <cite>Dr. A. Bianchi — Nutrizionista</cite>
+          </blockquote>
+        </article>
+        <article class="cc-expert-quote">
+          <div class="cc-expert-quote__image">
+            <img src="https://cdn.example.com/bepurex/doctor-2.jpg" alt="Dr.ssa L. Verdi" width="120" height="120" loading="lazy">
+          </div>
+          <blockquote>
+            <p>Ingredienti tradizionali con studi clinici alle spalle: un profilo di sicurezza noto e ben tollerato dalla maggior parte dei pazienti.</p>
+            <cite>Dr.ssa L. Verdi — Medico di base</cite>
+          </blockquote>
+        </article>
+      </div>
+    </section>
+
+    <section class="cc-benefits">
+      <h2>I benefici osservati</h2>
+      <ul class="cc-bullets">
+        <li class="cc-bullets__item">Più energia al mattino senza sbalzi</li>
+        <li class="cc-bullets__item">Migliore concentrazione durante la giornata</li>
+        <li class="cc-bullets__item">Recupero più rapido dopo l'attività fisica</li>
+        <li class="cc-bullets__item">Sonno più profondo e riposante</li>
+      </ul>
+    </section>
+
+    <section class="cc-reviews">
+      <h2>Testimonianze verificate</h2>
+      <div class="cc-review-list">
+        <article class="cc-review-card">
+          <div class="cc-review-card__stars" aria-label="5 stelle">★★★★★</div>
+          <p class="cc-review-card__body">Dopo 3 settimane mi sento un'altra persona. Consigliato.</p>
+          <footer class="cc-review-card__author">G. F. — Milano</footer>
+        </article>
+        <article class="cc-review-card">
+          <div class="cc-review-card__stars" aria-label="5 stelle">★★★★★</div>
+          <p class="cc-review-card__body">Prodotto naturale, arrivato in 4 giorni. Ordinerò di nuovo.</p>
+          <footer class="cc-review-card__author">S. R. — Roma</footer>
+        </article>
+        <article class="cc-review-card">
+          <div class="cc-review-card__stars" aria-label="4 stelle">★★★★☆</div>
+          <p class="cc-review-card__body">All'inizio ero scettico, ma dopo un mese ho notato una differenza reale.</p>
+          <footer class="cc-review-card__author">P. M. — Napoli</footer>
+        </article>
+      </div>
+    </section>
+
+    <section class="cc-faq">
+      <h2>Domande frequenti</h2>
+      <details class="cc-faq__item">
+        <summary>Quando arrivano i primi risultati?</summary>
+        <div class="cc-faq__answer">La maggior parte delle persone nota qualcosa dopo 2-3 settimane. Il ciclo completo consigliato è di 6-8 settimane.</div>
+      </details>
+      <details class="cc-faq__item">
+        <summary>Ci sono controindicazioni?</summary>
+        <div class="cc-faq__answer">Consigliamo di consultare il medico se assumi farmaci. Ingredienti naturali, ben tollerati.</div>
+      </details>
+      <details class="cc-faq__item">
+        <summary>Come funziona la garanzia?</summary>
+        <div class="cc-faq__answer">30 giorni soddisfatti o rimborsati, senza domande. Rimborso completo del prodotto.</div>
+      </details>
+    </section>
+
+    <section class="cc-cta cc-cta--final">
+      <h2>Provalo con la garanzia di rimborso 30 giorni</h2>
+      <a class="cc-pdp-offer cc-pdp-offer--primary" href="/products/bepurex-formula?variant=1x" data-variant-id="1x">
+        <span class="cc-pdp-offer__title">1 confezione</span>
+        <span class="cc-pdp-offer__price">€49</span>
+      </a>
+      <a class="cc-pdp-offer" href="/products/bepurex-formula?variant=3x" data-variant-id="3x">
+        <span class="cc-pdp-offer__title">3 confezioni (più venduto)</span>
+        <span class="cc-pdp-offer__price">€117</span>
+        <span class="cc-pdp-offer__compare">€147</span>
+      </a>
+    </section>
+
+    <section class="cc-guarantee">
+      <img src="https://cdn.example.com/bepurex/badge-30d.svg" alt="Garanzia 30 giorni" width="80" height="80" loading="lazy">
+      <p>Garanzia soddisfatti o rimborsati 30 giorni · Spedizione gratuita in Italia</p>
+    </section>
+
+  </main>
+
+  <footer class="cc-footer">
+    <p>© Bepurex — Integratori naturali. Non sostituisce una dieta equilibrata.</p>
+  </footer>
+
+</body>
+</html>

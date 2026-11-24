@@ -1,0 +1,37 @@
+{
+  "name": "@blackshop/jobs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./store": "./src/store.ts",
+    "./worker": "./src/worker.ts",
+    "./producer": "./src/producer.ts",
+    "./gc": "./src/gc.ts",
+    "./testing": "./src/testing/pg-harness.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@blackshop/db": "workspace:*",
+    "@blackshop/errors": "workspace:*",
+    "bullmq": "^5.21.0",
+    "drizzle-orm": "^0.36.4"
+  },
+  "devDependencies": {
+    "@blackshop/shared": "workspace:*",
+    "@electric-sql/pglite": "0.5.8",
+    "@electric-sql/pglite-socket": "0.2.11",
+    "@types/node": "^20.12.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "postgres": "^3.4.5",
+    "typescript": "^5.5.4",
+    "vitest": "^1.6.0"
+  }
+}

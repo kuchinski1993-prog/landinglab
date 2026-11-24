@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "description": "Canonical data for kaching-minimal.input.html — 3 offers padrão",
+    "used_by": ["render-bundle-offers", "render-product-json", "render-currency-config"]
+  },
+  "currency": "USD",
+  "currencySymbol": "$",
+  "landingPageId": "test-landing-kaching",
+  "variants": [
+    {
+      "lvId": "lv-1",
+      "name": "Acquista 1",
+      "quantityOfItems": 1,
+      "sortOrder": 0,
+      "productId": null,
+      "mirrorVariantId": "111",
+      "price": "29.95",
+      "compareAtPrice": "59.90"
+    },
+    {
+      "lvId": "lv-2",
+      "name": "Compra 2 e ricevi 1 GRATIS",
+      "quantityOfItems": 3,
+      "sortOrder": 1,
+      "productId": null,
+      "mirrorVariantId": "222",
+      "price": "59.90",
+      "compareAtPrice": "119.80"
+    },
+    {
+      "lvId": "lv-3",
+      "name": "Compra 3 e ricevi 2 GRATIS",
+      "quantityOfItems": 5,
+      "sortOrder": 2,
+      "productId": null,
+      "mirrorVariantId": "333",
+      "price": "89.85",
+      "compareAtPrice": "179.70"
+    }
+  ]
+}

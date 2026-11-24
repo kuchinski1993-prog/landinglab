@@ -1,0 +1,43 @@
+{
+  "name": "@blackshop/landinglab-build",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/build-output.ts",
+    "./providers": "./src/providers/claude-haiku.ts",
+    "./html-builder": "./dist/html-builder.mjs"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:html-builder": "esbuild src/agents/html-builder.ts --bundle --platform=node --target=node20 --format=esm --jsx=automatic --define:process.env.NODE_ENV=\\\"production\\\" --outfile=dist/html-builder.mjs --banner:js=\"import { createRequire as __llCreateRequire } from 'node:module'; const require = __llCreateRequire(import.meta.url);\" --log-level=warning",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.100.1",
+    "@blackshop/db": "workspace:*",
+    "@blackshop/landinglab-render": "workspace:*",
+    "@blackshop/landinglab-copy": "workspace:*",
+    "@blackshop/landinglab-research": "workspace:*",
+    "@blackshop/landinglab-visual": "workspace:*",
+    "drizzle-orm": "^0.36.4",
+    "html-minifier-terser": "^7.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/html-minifier-terser": "^7.0.2",
+    "@types/node": "^20.12.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "esbuild": "0.21.5",
+    "typescript": "^5.5.4",
+    "vitest": "^1.6.0"
+  }
+}

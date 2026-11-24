@@ -1,0 +1,67 @@
+{
+  "__placeholder": {
+    "status": "PENDING_SM_2_1",
+    "note": "TODO: preencher baseline oficial após SM-2.1 rodar `extractSkeleton({ htmlOverride: kachingLandingHtml })` em modo debug e capturar o resultado real. Este arquivo é estruturalmente conforme ExtractedSourceJsonSchema (docs/architecture/skeleton-mode-architecture.md §5.1), porém os valores são hipóteses derivadas manualmente do HTML sanitizado.",
+    "created_by": "@dev (Dex) — SM-6.1",
+    "expected_theme_fingerprint": "kaching",
+    "expected_partial": false
+  },
+  "copy": {
+    "hero_headline": "Wellness Formula — Daily Natural Support",
+    "hero_subhead": "Clinically studied extracts for daily vitality. Vegan, gluten-free, non-GMO.",
+    "benefit_bullets": [
+      "Sustained daily energy without the crash",
+      "Sharp focus for demanding workdays",
+      "Faster post-workout recovery",
+      "Deeper, more restful sleep"
+    ],
+    "faq": [
+      { "q": "How do I take it?", "a": "1 capsule daily with a glass of water, ideally in the morning." },
+      { "q": "When will I see results?", "a": "Most customers notice something after 2-3 weeks. Full cycle is 6-8 weeks." },
+      { "q": "What is your return policy?", "a": "30-day satisfaction guarantee. Full refund, no questions asked." }
+    ],
+    "testimonials": [
+      { "author": "J. K. — verified buyer", "content": "Feeling much better after 3 weeks. Highly recommend." },
+      { "author": "M. S. — verified buyer", "content": "Fast shipping and the bundle discount is real." },
+      { "author": "R. T. — verified buyer", "content": "Noticed a difference after about a month of consistent use." }
+    ]
+  },
+  "imagery": {
+    "hero_url": "https://cdn.example.com/kaching/main.jpg",
+    "gallery_urls": [
+      "https://cdn.example.com/kaching/thumb1.jpg",
+      "https://cdn.example.com/kaching/thumb2.jpg",
+      "https://cdn.example.com/kaching/thumb3.jpg"
+    ],
+    "lifestyle_urls": [],
+    "logo_url": "https://cdn.example.com/kaching/logo.svg"
+  },
+  "brand": {
+    "colors_hex_candidates": [],
+    "fonts_used": []
+  },
+  "commerce": {
+    "reviews": [
+      { "author": "J. K. — verified buyer", "content": "Feeling much better after 3 weeks. Highly recommend.", "rating": 5 },
+      { "author": "M. S. — verified buyer", "content": "Fast shipping and the bundle discount is real.", "rating": 5 },
+      { "author": "R. T. — verified buyer", "content": "Noticed a difference after about a month of consistent use.", "rating": 4 }
+    ],
+    "bundles": [
+      { "name": "1 bottle (30 days)", "price_cents": 3900, "qty": 1 },
+      { "name": "3 bottles (90 days)", "price_cents": 9900, "compare_at_cents": 11700, "qty": 3 },
+      { "name": "6 bottles (180 days)", "price_cents": 19900, "compare_at_cents": 23400, "qty": 6 }
+    ],
+    "currency": "EUR",
+    "badges": [
+      "30-day money-back guarantee",
+      "Free EU shipping",
+      "Secure checkout"
+    ]
+  },
+  "dynamic_extras": [],
+  "meta": {
+    "partial": false,
+    "unresolved_fields": [],
+    "detected_language": "en"
+  }
+}

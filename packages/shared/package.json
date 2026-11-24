@@ -1,0 +1,45 @@
+{
+  "name": "@blackshop/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types/health": "./src/types/health.ts",
+    "./vsl-preview-token": "./src/vsl-preview-token.ts",
+    "./mime-words": "./src/inbound/mime-words.ts",
+    "./runtime-mode": "./src/runtime-mode.ts",
+    "./http": "./src/http/index.ts",
+    "./http/safe-fetch": "./src/http/safe-fetch.ts",
+    "./modules": "./src/modules.ts",
+    "./atendimento": "./src/atendimento/config.ts",
+    "./fulfillment": "./src/fulfillment.ts",
+    "./testing/default-store-scan": "./src/testing/default-store-scan.ts",
+    "./landing-store": "./src/landing-store.ts",
+    "./external-checkout": "./src/external-checkout.ts",
+    "./landing-offers": "./src/landing-offers.ts",
+    "./landing-edits-runtime": "./src/landing-edits-runtime.ts",
+    "./meta-catalog-feed": "./src/meta-catalog-feed.ts",
+    "./meta-catalog-graph": "./src/meta-catalog-graph.ts",
+    "./landing-html/anti-wipe-guard": "./src/landing-html/anti-wipe-guard.ts",
+    "./landing-html/theme-globals-shim": "./src/landing-html/theme-globals-shim.ts",
+    "./landing-html/sanitize-landing-html": "./src/landing-html/sanitize-landing-html.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@blackshop/db": "workspace:*",
+    "drizzle-orm": "^0.36.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "typescript": "^5.5.4",
+    "vitest": "^1.6.0"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@blackshop/landinglab-deploy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/deployment.ts",
+    "./providers": "./src/providers/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@blackshop/db": "workspace:*",
+    "@blackshop/landinglab-domains": "workspace:*",
+    "drizzle-orm": "^0.36.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "typescript": "^5.5.4",
+    "vitest": "^1.6.0"
+  }
+}

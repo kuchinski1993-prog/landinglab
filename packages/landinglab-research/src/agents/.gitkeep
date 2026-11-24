@@ -1,0 +1,11 @@
+# Wave 2 preenche este diretório com os 7 agent modules:
+#   - research-lead.ts       (Rex — orchestrator glue)
+#   - lens-scout.ts          (Iris — SerpAPI Lens)
+#   - vision-verifier.ts     (Vera — Claude vision rerank)
+#   - spec-hunter.ts         (Specs — Firecrawl extract)
+#   - review-miner.ts        (Rita — Apify actors)
+#   - market-analyst.ts      (Marco — Perplexity Sonar)
+#   - pir-synthesizer.ts     (Sage — Claude Opus synthesis + PIR persist)
+#
+# Contratos entre agents e orchestrator ficam definidos aqui.
+# Cada agent é uma função pura que aceita dependencies (provider clients) via injection.

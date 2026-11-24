@@ -1,0 +1,159 @@
+<!--
+  Fixture: aurivita-landing.html
+  Source: sanitized replica of an Aurivita-branded Shopify landing (Kaching-based).
+  Purpose: SM-2.1 skeleton-extractor theme fingerprint = 'aurivita' + cheerio path unit tests.
+  Sanitization applied:
+    - No real customer names, emails, phones
+    - No API tokens / analytics IDs / Shopify shop IDs
+    - Prices in EUR are illustrative
+    - CDN URLs replaced with cdn.example.com
+  Theme markers preserved: .aurivita-stats, .aurivita-stats__number, .kaching-bundles-block
+    (from packages/landinglab-cloner/src/agents/landinglab-fixes-injector.ts)
+-->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Aurivita — Natürliche Energie für den Alltag</title>
+  <meta name="description" content="Natürliches Nahrungsergänzungsmittel. Kostenloser Versand, 30 Tage Geld-zurück-Garantie.">
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="Aurivita — Natürliche Energie">
+  <meta property="og:image" content="https://cdn.example.com/aurivita/hero.jpg">
+  <link rel="canonical" href="https://example.com/aurivita/landing-de">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Aurivita Formula",
+    "image": "https://cdn.example.com/aurivita/hero.jpg",
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "EUR",
+      "lowPrice": "45.00",
+      "highPrice": "225.00"
+    }
+  }
+  </script>
+</head>
+<body class="template-product aurivita-theme kaching-theme">
+
+  <header class="site-header">
+    <a class="site-header__logo" href="/">
+      <img src="https://cdn.example.com/aurivita/logo.svg" alt="Aurivita" width="140" height="32">
+    </a>
+  </header>
+
+  <main class="product-page">
+
+    <section class="product-hero">
+      <div class="product-hero__gallery">
+        <picture>
+          <img src="https://cdn.example.com/aurivita/main.jpg" alt="Aurivita Formula Flasche" width="800" height="800" loading="eager">
+        </picture>
+      </div>
+      <div class="product-hero__thumbs">
+        <img src="https://cdn.example.com/aurivita/thumb1.jpg" alt="Produktetikett" width="120" height="120" loading="lazy">
+        <img src="https://cdn.example.com/aurivita/thumb2.jpg" alt="Inhaltsstoffe" width="120" height="120" loading="lazy">
+      </div>
+      <div class="product-hero__info">
+        <h1 class="product-hero__title">Aurivita — Natürliche Energie für jeden Tag</h1>
+        <p class="product-hero__subtitle">Standardisierte Extrakte für tägliche Vitalität. Vegan, glutenfrei, ohne GVO.</p>
+        <div class="product-hero__stars">★★★★★ <span>4.8 (1.283 Bewertungen)</span></div>
+      </div>
+    </section>
+
+    <section class="aurivita-stats">
+      <div class="aurivita-stats__item">
+        <span class="aurivita-stats__number">4.8</span>
+        <span class="aurivita-stats__label">Durchschnittliche Bewertung</span>
+      </div>
+      <div class="aurivita-stats__item">
+        <span class="aurivita-stats__number">1.283</span>
+        <span class="aurivita-stats__label">Verifizierte Kunden</span>
+      </div>
+      <div class="aurivita-stats__item">
+        <span class="aurivita-stats__number">30 Tage</span>
+        <span class="aurivita-stats__label">Geld-zurück-Garantie</span>
+      </div>
+    </section>
+
+    <section class="kaching-bundles-block" data-block-id="bundles-hero">
+      <h2 class="kaching-bundles-block__heading">Wähle dein Bundle</h2>
+      <div class="kaching-bundles-block__list">
+        <div class="kaching-bundles__bar" data-deal-bar-id="1x">
+          <div class="kaching-bundles__bar-title">1 Flasche (30 Tage)</div>
+          <div class="kaching-bundles__bar-price">€45</div>
+          <div class="kaching-bundles__bar-qty">30 Kapseln</div>
+        </div>
+        <div class="kaching-bundles__bar kaching-bundles__bar--selected" data-deal-bar-id="3x">
+          <div class="kaching-bundles__bar-badge">Beliebteste</div>
+          <div class="kaching-bundles__bar-title">3 Flaschen (90 Tage)</div>
+          <div class="kaching-bundles__bar-price">€114</div>
+          <div class="kaching-bundles__bar-compare">€135</div>
+          <div class="kaching-bundles__bar-qty">90 Kapseln</div>
+        </div>
+        <div class="kaching-bundles__bar" data-deal-bar-id="6x">
+          <div class="kaching-bundles__bar-title">6 Flaschen (180 Tage)</div>
+          <div class="kaching-bundles__bar-price">€225</div>
+          <div class="kaching-bundles__bar-compare">€270</div>
+          <div class="kaching-bundles__bar-qty">180 Kapseln</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <h2>Warum Kunden es lieben</h2>
+      <ul class="benefits__list">
+        <li>Anhaltende tägliche Energie ohne Absturz</li>
+        <li>Scharfer Fokus für anspruchsvolle Arbeitstage</li>
+        <li>Schnellere Regeneration nach dem Training</li>
+        <li>Tieferer, erholsamerer Schlaf</li>
+      </ul>
+    </section>
+
+    <section class="reviews">
+      <h2>Verifizierte Bewertungen</h2>
+      <div class="spr-reviews">
+        <article class="spr-review">
+          <div class="spr-starratings">★★★★★</div>
+          <p class="spr-review-content-body">Nach 3 Wochen fühle ich mich viel besser. Sehr empfehlenswert.</p>
+          <footer><span class="spr-review-header-byline">K. M. — verifiziert</span></footer>
+        </article>
+        <article class="spr-review">
+          <div class="spr-starratings">★★★★★</div>
+          <p class="spr-review-content-body">Schneller Versand und der Bundle-Rabatt ist real.</p>
+          <footer><span class="spr-review-header-byline">S. B. — verifiziert</span></footer>
+        </article>
+      </div>
+    </section>
+
+    <section class="faq">
+      <h2>Häufige Fragen</h2>
+      <details class="faq__item">
+        <summary>Wie nehme ich es ein?</summary>
+        <div class="faq__answer">1 Kapsel täglich mit einem Glas Wasser, idealerweise morgens.</div>
+      </details>
+      <details class="faq__item">
+        <summary>Wann sehe ich Ergebnisse?</summary>
+        <div class="faq__answer">Die meisten Kunden bemerken nach 2-3 Wochen etwas. Vollständiger Zyklus 6-8 Wochen.</div>
+      </details>
+      <details class="faq__item">
+        <summary>Wie funktioniert die Rückgabe?</summary>
+        <div class="faq__answer">30-Tage-Zufriedenheitsgarantie. Volle Rückerstattung, keine Fragen.</div>
+      </details>
+    </section>
+
+    <section class="guarantee">
+      <img src="https://cdn.example.com/aurivita/badge-30d.svg" alt="30-Tage-Garantie" width="80" height="80" loading="lazy">
+      <p>30-Tage-Geld-zurück-Garantie · Kostenloser EU-Versand · Sichere Kaufabwicklung</p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© Aurivita — Natürliche Nahrungsergänzungsmittel. Kein Medikament.</p>
+  </footer>
+
+</body>
+</html>

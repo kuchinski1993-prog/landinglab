@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Aurivita E2E Fixture (starts in USD)</title>
+  <!--
+    Fixture E2E for task #87 — starts in USD to simulate a raw Aurivita clone
+    BEFORE renderProductJson runs. Sanitized replica; theme markers preserved.
+    Sources theme pattern from packages/landinglab-cloner/tests/__fixtures__/aurivita-landing.html
+    and the product-json script pattern from processor §5.05.
+  -->
+  <script data-cc-pdp-product-json>{"currency":"USD","moneyFormat":"${{amount}}","marketCurrencyCode":"USD","variants":{"111":{"price":6995,"priceFormatted":"$69.95","compareAtPrice":9995,"compareAtPriceFormatted":"$99.95","sellingPlans":{"sp-monthly":{"price":6995,"priceFormatted":"$69.95","compareAtPrice":9995,"compareAtPriceFormatted":"$99.95"}}},"222":{"price":13990,"priceFormatted":"$139.90","compareAtPrice":19990,"compareAtPriceFormatted":"$199.90"},"333":{"price":20985,"priceFormatted":"$209.85","compareAtPrice":29985,"compareAtPriceFormatted":"$299.85"}}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Aurivita","offers":{"@type":"AggregateOffer","priceCurrency":"USD","lowPrice":"69.95","highPrice":"209.85"}}</script>
+</head>
+<body class="template-product aurivita-theme kaching-theme">
+  <button class="cc-pdp-offer" data-value="1">
+    <span class="cc-pdp-offer__price">$69.95</span>
+    <span class="cc-pdp-offer__compare">$99.95</span>
+    <span class="cc-pdp-offer__subtitle">Save 30%</span>
+  </button>
+  <button class="cc-pdp-offer is-selected" data-value="2">
+    <span class="cc-pdp-offer__price">$139.90</span>
+    <span class="cc-pdp-offer__compare">$199.90</span>
+    <span class="cc-pdp-offer__subtitle">Save 30%</span>
+  </button>
+  <button class="cc-pdp-offer" data-value="3">
+    <span class="cc-pdp-offer__price">$209.85</span>
+    <span class="cc-pdp-offer__compare">$299.85</span>
+    <span class="cc-pdp-offer__subtitle">Save 30%</span>
+  </button>
+  <div class="cc-pdp-buy-buttons">
+    <button class="cc-pdp__buy-cta">Aggiungi al carrello</button>
+  </div>
+</body>
+</html>

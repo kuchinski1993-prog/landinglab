@@ -1,0 +1,245 @@
+{
+  "$comment": "Story 0.12 — lista CONGELADA e append-only das migrations que NÃO estão no _journal.json porque chegaram ao banco fora do `db:migrate` (Drizzle). NÃO mova nenhuma para o journal sem a prova do AC 3 da 0.12: o migrator as reaplicaria. Migration nova fora do journal entra AQUI no MESMO PR que a cria. Regras: docs/architecture/data-schema.md.",
+  "entries": [
+    {
+      "tag": "0061_tracker_campaigns_target_countries",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0062_tracker_access_rules_datacenter_blacklist",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0068_landing_generation_runs_translate_squad",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0069_landing_bundle_offers",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0070_backfill_bundle_offers_from_variants",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0071_landing_html_snapshots",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0072_landing_html_snapshots_data_fingerprint",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0073_landing_html_snapshots_clone_initial_unique",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0076_enable_rls_landing_tables",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0077_landing_shopify_product_gid",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0078_subs_presentation_mode",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0079_stripe_accounts",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0080_landing_markets",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0081_stripe_checkout",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0082_landing_post_sale",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0083_landing_support",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0084_landing_subscriptions",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0085_checkout_logo",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0086_vsl_baseline",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0087_vsl_rls",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0088_vsl_g3_backend",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0089_vsl_f1b_editing",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0090_vsl_meta_capi",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0091_inbox_email_flags",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0092_rls_deny_all_public",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0093_all_orders_view_lockdown",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0094_webhook_delivery_attempts",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0095_fx_guard",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0096_store_modules",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0097_job_runs",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0098_products_source_url_por_loja",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0099_inbound_emails_message_id_por_loja",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0100_store_support_addresses",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0101_auth_users_tokens_audit",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0102_auth_seed_owner",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0103_auth_sessions",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0104_assistant_tables",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0105_ai_usage_log_cache_tokens",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0106_store_soulrya",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0107_fulfillment_policy",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0108_custom_fields",
+      "appliedBy": "manual",
+      "note": "fora do _journal.json no baseline de 2026-11-05 (Story 0.12); aplicada fora do db:migrate — estado em produção confirmado pelo @devops (T0)"
+    },
+    {
+      "tag": "0109_sphere_offers",
+      "appliedBy": "manual",
+      "note": "Story 16.1: aplicação manual pelo @devops, com aprovação humana. aplicada em produção (Supabase BlackShop) em 2026-11-14 com autorização do owner; conferida após aplicar."
+    },
+    {
+      "tag": "0110_landing_checkout_provider_external",
+      "appliedBy": "manual",
+      "note": "Story 16.3: aplicação manual pelo @devops, com aprovação humana. aplicada em produção (Supabase BlackShop) em 2026-11-14 com autorização do owner; conferida após aplicar."
+    },
+    {
+      "tag": "0111_meta_catalogs",
+      "appliedBy": "manual",
+      "note": "Story 24.1: aplicação manual pelo @devops, com aprovação humana. aplicada em produção (Supabase BlackShop) em 2026-11-20 com autorização do owner; conferida após aplicar."
+    },
+    {
+      "tag": "0112_meta_catalog_media",
+      "appliedBy": "manual",
+      "note": "Story 24.3: aplicação manual pelo @devops, com aprovação humana. aplicada em produção (Supabase BlackShop) em 2026-11-20 com autorização do owner; conferida após aplicar."
+    },
+    {
+      "tag": "0113_meta_catalog_sync",
+      "appliedBy": "manual",
+      "note": "Story 24.4: aplicação manual pelo @devops, com aprovação humana. aplicada em produção (Supabase BlackShop) em 2026-11-20 com autorização do owner; conferida após aplicar."
+    },
+    {
+      "tag": "0114_meta_catalog_short_feed_token",
+      "appliedBy": "manual",
+      "note": "Story 24.6: aplicação manual com aprovação humana. aplicada em produção (Supabase BlackShop) em 2026-11-21 com autorização do owner; conferida após aplicar (CHECK >= 32)."
+    },
+    {
+      "tag": "0115_landing_offers_source_bullets_link",
+      "appliedBy": "manual",
+      "note": "Story 25.1: aplicação manual com aprovação humana. aplicada em produção (Supabase BlackShop) em 2026-11-24 com autorização do owner, antes do deploy da 25.1; conferida após aplicar (colunas, defaults e CHECK page/system; 14 landings em 'page')."
+    }
+  ]
+}

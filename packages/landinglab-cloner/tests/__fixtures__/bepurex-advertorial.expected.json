@@ -1,0 +1,83 @@
+{
+  "__placeholder": {
+    "status": "PENDING_SM_2_1",
+    "note": "TODO: preencher baseline oficial após SM-2.1 rodar `extractSkeleton({ htmlOverride: bepurexAdvertorialHtml })` em modo debug e capturar o resultado real. Este arquivo é estruturalmente conforme ExtractedSourceJsonSchema (docs/architecture/skeleton-mode-architecture.md §5.1), porém os valores são hipóteses derivadas manualmente do HTML sanitizado. Ajustar quando o cheerio path estiver implementado.",
+    "created_by": "@dev (Dex) — SM-6.1",
+    "expected_theme_fingerprint": "bepurex",
+    "expected_partial": false
+  },
+  "copy": {
+    "hero_headline": "Ho ritrovato la mia energia — la storia di Marco, 54 anni",
+    "hero_subhead": "Come un semplice integratore naturale mi ha aiutato in 6 settimane, senza cambiare la mia dieta.",
+    "benefit_bullets": [
+      "Più energia al mattino senza sbalzi",
+      "Migliore concentrazione durante la giornata",
+      "Recupero più rapido dopo l'attività fisica",
+      "Sonno più profondo e riposante"
+    ],
+    "faq": [
+      { "q": "Quando arrivano i primi risultati?", "a": "La maggior parte delle persone nota qualcosa dopo 2-3 settimane. Il ciclo completo consigliato è di 6-8 settimane." },
+      { "q": "Ci sono controindicazioni?", "a": "Consigliamo di consultare il medico se assumi farmaci. Ingredienti naturali, ben tollerati." },
+      { "q": "Come funziona la garanzia?", "a": "30 giorni soddisfatti o rimborsati, senza domande. Rimborso completo del prodotto." }
+    ],
+    "testimonials": [
+      { "author": "G. F. — Milano", "content": "Dopo 3 settimane mi sento un'altra persona. Consigliato." },
+      { "author": "S. R. — Roma", "content": "Prodotto naturale, arrivato in 4 giorni. Ordinerò di nuovo." },
+      { "author": "P. M. — Napoli", "content": "All'inizio ero scettico, ma dopo un mese ho notato una differenza reale." }
+    ]
+  },
+  "imagery": {
+    "hero_url": "https://cdn.example.com/bepurex/hero-1200.jpg",
+    "gallery_urls": [
+      "https://cdn.example.com/bepurex/week1.jpg",
+      "https://cdn.example.com/bepurex/week2.jpg",
+      "https://cdn.example.com/bepurex/week6.jpg"
+    ],
+    "lifestyle_urls": [
+      "https://cdn.example.com/bepurex/marco-before.jpg",
+      "https://cdn.example.com/bepurex/doctor-1.jpg",
+      "https://cdn.example.com/bepurex/doctor-2.jpg"
+    ],
+    "logo_url": "https://cdn.example.com/bepurex/logo.svg"
+  },
+  "brand": {
+    "colors_hex_candidates": [],
+    "fonts_used": []
+  },
+  "commerce": {
+    "reviews": [
+      { "author": "G. F. — Milano", "content": "Dopo 3 settimane mi sento un'altra persona. Consigliato.", "rating": 5 },
+      { "author": "S. R. — Roma", "content": "Prodotto naturale, arrivato in 4 giorni. Ordinerò di nuovo.", "rating": 5 },
+      { "author": "P. M. — Napoli", "content": "All'inizio ero scettico, ma dopo un mese ho notato una differenza reale.", "rating": 4 }
+    ],
+    "bundles": [
+      { "name": "1 confezione", "price_cents": 4900, "qty": 1 },
+      { "name": "3 confezioni (più venduto)", "price_cents": 11700, "compare_at_cents": 14700, "qty": 3 }
+    ],
+    "currency": "EUR",
+    "badges": [
+      "Garanzia 30 giorni",
+      "Spedizione gratuita in Italia"
+    ]
+  },
+  "dynamic_extras": [
+    {
+      "kind": "story",
+      "heading": "Il mio percorso — settimana dopo settimana",
+      "payload": {
+        "steps": [
+          { "label": "Settimana 1", "body": "I primi giorni non ho notato molto, ma dopo 5 giorni la mattina era diversa: meno pesantezza al risveglio." },
+          { "label": "Settimana 2", "body": "Camminate al parco senza fiatone. Mia moglie mi ha detto: 'Sei tornato quello di prima'." },
+          { "label": "Settimana 6", "body": "Ho ripreso il tennis dopo 4 anni. Il mio medico mi ha detto che i valori sono ottimi." }
+        ]
+      },
+      "llm_verdict": "recommended",
+      "llm_reason": "Timeline narrativa (cc-timeline) é o eixo emocional do advertorial — reter aumenta credibilidade."
+    }
+  ],
+  "meta": {
+    "partial": false,
+    "unresolved_fields": [],
+    "detected_language": "it"
+  }
+}

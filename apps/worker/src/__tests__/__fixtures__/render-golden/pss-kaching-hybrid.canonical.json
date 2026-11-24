@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "description": "Canonical data for pss-minimal.input.html — 2 offers (fixture menor)",
+    "used_by": ["render-bundle-offers", "render-currency-config"]
+  },
+  "currency": "USD",
+  "currencySymbol": "$",
+  "landingPageId": "test-landing-pss",
+  "variants": [
+    {
+      "lvId": "lv-p1",
+      "name": "Pack 1",
+      "quantityOfItems": 1,
+      "sortOrder": 0,
+      "productId": null,
+      "mirrorVariantId": "p111",
+      "price": "29.95",
+      "compareAtPrice": "59.90"
+    },
+    {
+      "lvId": "lv-p2",
+      "name": "Pack 3",
+      "quantityOfItems": 3,
+      "sortOrder": 1,
+      "productId": null,
+      "mirrorVariantId": "p222",
+      "price": "59.90",
+      "compareAtPrice": "119.80"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "name": "@blackshop/landinglab-adapters",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js",
+      "default": "./dist/types/index.js"
+    },
+    "./resolver": {
+      "types": "./dist/resolver/index.d.ts",
+      "import": "./dist/resolver/index.js",
+      "default": "./dist/resolver/index.js"
+    },
+    "./adapters/kaching": {
+      "types": "./dist/adapters/kaching/index.d.ts",
+      "import": "./dist/adapters/kaching/index.js",
+      "default": "./dist/adapters/kaching/index.js"
+    },
+    "./family-classifier": {
+      "types": "./dist/family-classifier/index.d.ts",
+      "import": "./dist/family-classifier/index.js",
+      "default": "./dist/family-classifier/index.js"
+    },
+    "./shared-detectors": {
+      "types": "./dist/shared-detectors/index.d.ts",
+      "import": "./dist/shared-detectors/index.js",
+      "default": "./dist/shared-detectors/index.js"
+    },
+    "./semantic-mapper": {
+      "types": "./dist/semantic-mapper/index.d.ts",
+      "import": "./dist/semantic-mapper/index.js",
+      "default": "./dist/semantic-mapper/index.js"
+    },
+    "./image-slots": {
+      "types": "./dist/image-slots/index.d.ts",
+      "import": "./dist/image-slots/index.js",
+      "default": "./dist/image-slots/index.js"
+    },
+    "./text-blocks": {
+      "types": "./dist/text-blocks/index.d.ts",
+      "import": "./dist/text-blocks/index.js",
+      "default": "./dist/text-blocks/index.js"
+    }
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "typescript": "^5.5.4",
+    "vitest": "^1.6.0"
+  }
+}

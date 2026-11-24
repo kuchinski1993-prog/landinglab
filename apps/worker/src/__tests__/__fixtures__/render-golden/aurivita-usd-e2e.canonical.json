@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "description": "Canonical data for aurivita-usd-e2e.input.html — represents an Italian bundle catalog (EUR) applied over a USD Aurivita clone. Task #87 E2E.",
+    "used_by": ["render-product-json-e2e"]
+  },
+  "currency": "EUR",
+  "currencySymbol": "€",
+  "landingPageId": "test-landing-aurivita-e2e",
+  "variants": [
+    {
+      "lvId": "lv-1",
+      "name": "Acquista 1",
+      "quantityOfItems": 1,
+      "sortOrder": 0,
+      "productId": null,
+      "mirrorVariantId": "111",
+      "price": "69.95",
+      "compareAtPrice": "99.95"
+    },
+    {
+      "lvId": "lv-2",
+      "name": "Acquista 2",
+      "quantityOfItems": 2,
+      "sortOrder": 1,
+      "productId": null,
+      "mirrorVariantId": "222",
+      "price": "139.90",
+      "compareAtPrice": "199.90"
+    },
+    {
+      "lvId": "lv-3",
+      "name": "Acquista 3",
+      "quantityOfItems": 3,
+      "sortOrder": 2,
+      "productId": null,
+      "mirrorVariantId": "333",
+      "price": "209.85",
+      "compareAtPrice": "299.85"
+    }
+  ]
+}

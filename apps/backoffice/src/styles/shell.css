@@ -1,0 +1,788 @@
+/*
+ * Story 20.2 — moldura do painel novo (topo + menu Conta × Loja).
+ *
+ * Valores espelham o admin do Polaris 2.0 (mesma base de ds-tokens.css).
+ * A moldura é HTML próprio (classes ds-shell-*) para continuar de pé mesmo se
+ * o script do Polaris 2 falhar; os `s-icon` são só decoração.
+ *
+ * Escopo: tudo sob `.ds-shell`. A fonte Inter vale só para topo e menu — o
+ * conteúdo (telas ainda em Polaris React) herda a pilha do Polaris React como
+ * antes (ver regra 'BS Inter Local' em ds-tokens.css).
+ *
+ * Mesmo modelo do Frame antigo do Polaris React: topo fixo de 56 px, menu
+ * fixo de 240 px e rolagem da janela — telas com `position: sticky` (ex.:
+ * barra do TrustShield) se comportam como antes.
+ */
+
+.ds-shell {
+  --ds-shell-topbar-h: 3.5rem;
+  --ds-shell-nav-w: 15rem;
+  --ds-shell-font: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue',
+    sans-serif;
+  --ds-shell-topbar-bg: #1a1a1a;
+  --ds-shell-topbar-control: #303030;
+  --ds-shell-topbar-control-hover: #3a3a3a;
+  /* Story 20.14a — menu no mesmo preto fosco do cabeçalho (mesmo token, não um 2º hex). */
+  --ds-shell-nav-bg: var(--ds-shell-topbar-bg);
+  --ds-shell-nav-hover: #262626;
+  --ds-shell-nav-active: var(--ds-shell-topbar-control);
+  --ds-shell-nav-text: #e3e3e3;
+  --ds-shell-nav-text-secondary: #a0a0a0;
+  --ds-shell-nav-badge-bg: #303030;
+  --ds-shell-nav-badge-text: #e3e3e3;
+  --ds-shell-focus-on-dark: #ffffff;
+  /* Painel claro de cantos arredondados encaixado na moldura escura. */
+  --ds-shell-frame-radius: 0.75rem;
+  --ds-shell-frame-gutter: 0.5rem;
+  --ds-shell-text: #303030;
+  --ds-shell-text-secondary: #616161;
+  --ds-shell-border: #e3e3e3;
+  --ds-shell-surface: #fff;
+  --ds-shell-focus: #005bd3;
+  --ds-shell-critical-bg: #fee8eb;
+  --ds-shell-critical-text: #8e0b21;
+  --ds-shell-warning-bg: #fff1e3;
+  --ds-shell-warning-text: #5e4200;
+  --ds-shell-radius: 0.5rem;
+  --ds-shell-shadow: 0 0.25rem 0.375rem -0.125rem rgba(26, 26, 26, 0.2), 0 0 0 1px rgba(26, 26, 26, 0.08);
+  min-height: 100vh;
+  background: #f1f1f1;
+}
+
+.ds-shell-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ds-shell :focus-visible {
+  outline: 2px solid var(--ds-shell-focus);
+  outline-offset: 1px;
+}
+
+/* Pular para o conteúdo */
+.ds-shell-skip {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 600;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--ds-shell-radius);
+  background: var(--ds-shell-surface);
+  color: var(--ds-shell-text);
+  font: 600 0.8125rem/1.25rem var(--ds-shell-font);
+  transform: translateY(-200%);
+}
+.ds-shell-skip:focus {
+  transform: none;
+}
+
+/* ─── Topo ─────────────────────────────────────────────────────────── */
+/*
+ * Story 20.14a — o <header> recebe o tema escuro parcial do Polaris 2 só para os `s-icon` ficarem
+ * claros. O tema também liga `color-scheme: dark`; aqui o cabeçalho volta ao esquema claro de antes
+ * (campos nativos, rolagem e popovers/diálogo claros sem mudança). Seletor com 2 classes para vencer
+ * a folha adotada do Polaris 2.
+ */
+.ds-shell .ds-shell-topbar {
+  color-scheme: light;
+}
+.ds-shell-topbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--ds-shell-topbar-h);
+  z-index: 512;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 0.75rem;
+  background: var(--ds-shell-topbar-bg);
+  color: #e3e3e3;
+  font-family: var(--ds-shell-font);
+  font-size: 0.8125rem;
+}
+.ds-shell-topbar__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: var(--ds-shell-radius);
+  background: var(--ds-shell-topbar-control);
+  color: #fff;
+  cursor: pointer;
+}
+.ds-shell-topbar__toggle-icon {
+  display: block;
+}
+.ds-shell-topbar__toggle:hover {
+  background: var(--ds-shell-topbar-control-hover);
+}
+.ds-shell-topbar__logo {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  margin-right: 0.5rem;
+  border-radius: var(--ds-shell-radius);
+}
+.ds-shell-topbar__logo-mark {
+  display: none;
+}
+.ds-shell-topbar__search {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* Seletor de loja */
+.ds-shell-store {
+  position: relative;
+  flex: 0 0 auto;
+}
+.ds-shell-store__trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  max-width: 14rem;
+  height: 2rem;
+  padding: 0 0.625rem;
+  border: 0;
+  border-radius: var(--ds-shell-radius);
+  background: var(--ds-shell-topbar-control);
+  color: #fff;
+  font: 550 0.8125rem/1 var(--ds-shell-font);
+  cursor: pointer;
+}
+.ds-shell-store__trigger:hover {
+  background: var(--ds-shell-topbar-control-hover);
+}
+.ds-shell-store__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-shell-store__caret {
+  font-size: 0.625rem;
+  opacity: 0.8;
+}
+.ds-shell-store__warn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  background: #e51c00;
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+.ds-shell-store__panel {
+  left: 0;
+  width: 18rem;
+}
+.ds-shell-store__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 16rem;
+  overflow: auto;
+}
+.ds-shell-store__error {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0.25rem 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--ds-shell-radius);
+  background: var(--ds-shell-critical-bg);
+  color: var(--ds-shell-critical-text);
+}
+.ds-shell-store__error-text {
+  margin: 0;
+}
+
+/* Popovers do topo (seletor, busca, usuário) */
+.ds-shell-popover {
+  position: absolute;
+  top: calc(100% + 0.375rem);
+  z-index: 515;
+  padding: 0.375rem;
+  border-radius: 0.75rem;
+  background: var(--ds-shell-surface);
+  color: var(--ds-shell-text);
+  box-shadow: var(--ds-shell-shadow);
+  font: 450 0.8125rem/1.25rem var(--ds-shell-font);
+}
+.ds-shell-popover[hidden] {
+  display: none;
+}
+.ds-shell-popover__title {
+  margin: 0;
+  padding: 0.375rem 0.5rem 0.25rem;
+  color: var(--ds-shell-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+.ds-shell-popover__hint {
+  margin: 0;
+  padding: 0.5rem;
+  color: var(--ds-shell-text-secondary);
+}
+.ds-shell-popover__footer {
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--ds-shell-border);
+}
+.ds-shell-menu-item {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  border: 0;
+  border-radius: var(--ds-shell-radius);
+  background: transparent;
+  color: var(--ds-shell-text);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.ds-shell-menu-item:hover:not(:disabled) {
+  background: #f1f1f1;
+}
+.ds-shell-menu-item:disabled {
+  color: #b5b5b5;
+  cursor: not-allowed;
+}
+.ds-shell-menu-item--active {
+  background: #f1f1f1;
+  font-weight: 650;
+}
+
+/* Busca */
+.ds-shell-search {
+  position: relative;
+  width: 100%;
+  max-width: 30rem;
+}
+.ds-shell-search__icon {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  display: flex;
+  transform: translateY(-50%);
+  --s-icon-color: #b5b5b5;
+  pointer-events: none;
+}
+.ds-shell-search__input {
+  width: 100%;
+  height: 2rem;
+  padding: 0 3.5rem 0 2rem;
+  border: 1px solid #4a4a4a;
+  border-radius: var(--ds-shell-radius);
+  background: var(--ds-shell-topbar-control);
+  color: #fff;
+  font: 450 0.8125rem/1 var(--ds-shell-font);
+}
+.ds-shell-search__input::placeholder {
+  color: #b5b5b5;
+}
+.ds-shell-search__input:focus {
+  background: #fff;
+  color: var(--ds-shell-text);
+  outline: none;
+  border-color: var(--ds-shell-focus);
+}
+/*
+ * Story 20.14a — com o tema escuro parcial no cabeçalho a lupa fica clara (#dcdcdc); com a busca em
+ * foco o campo fica branco, então a lupa volta ao tom escuro de antes (#101010 = 220 × 0,073).
+ */
+.ds-shell .p-partial-theme-admin-next-dark .ds-shell-search:focus-within .ds-shell-search__icon s-icon {
+  filter: brightness(0.073);
+}
+.ds-shell-search__kbd {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+  background: #4a4a4a;
+  color: #e3e3e3;
+  font: 550 0.6875rem/1.125rem var(--ds-shell-font);
+  pointer-events: none;
+}
+.ds-shell-search__panel {
+  left: 0;
+  right: 0;
+  max-height: min(70vh, 28rem);
+  overflow: auto;
+}
+.ds-shell-search__group + .ds-shell-search__group {
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--ds-shell-border);
+}
+.ds-shell-search__option {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  border-radius: var(--ds-shell-radius);
+  cursor: pointer;
+}
+.ds-shell-search__option--active {
+  background: #f1f1f1;
+}
+.ds-shell-search__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-shell-search__detail {
+  overflow: hidden;
+  color: var(--ds-shell-text-secondary);
+  font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-shell-search__error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--ds-shell-radius);
+  background: var(--ds-shell-critical-bg);
+  color: var(--ds-shell-critical-text);
+}
+
+/* Usuário */
+.ds-shell-user {
+  position: relative;
+  flex: 0 0 auto;
+}
+.ds-shell-user__trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2rem;
+  padding: 0 0.375rem;
+  border: 0;
+  border-radius: var(--ds-shell-radius);
+  background: transparent;
+  color: #fff;
+  font: 550 0.8125rem/1 var(--ds-shell-font);
+  cursor: pointer;
+}
+.ds-shell-user__trigger:hover {
+  background: var(--ds-shell-topbar-control-hover);
+}
+.ds-shell-user__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.375rem;
+  background: #36fba1;
+  color: #1a1a1a;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+.ds-shell-user__menu {
+  right: 0;
+  width: 14rem;
+}
+/* Story 22.1b — nome real (corta nomes longos) e identidade no topo do menu aberto. */
+.ds-shell-user__name {
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-shell-user__identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  margin: 0 0 0.25rem;
+  padding: 0.375rem 0.5rem 0.5rem;
+  border-bottom: 1px solid var(--ds-shell-border);
+}
+.ds-shell-user__identity-name {
+  color: var(--ds-shell-text);
+  font-weight: 650;
+}
+.ds-shell-user__identity-email {
+  overflow: hidden;
+  color: var(--ds-shell-text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Menu lateral ─────────────────────────────────────────────────── */
+.ds-shell-sidebar {
+  position: fixed;
+  top: var(--ds-shell-topbar-h);
+  bottom: 0;
+  left: 0;
+  z-index: 511;
+  width: var(--ds-shell-nav-w);
+  overflow-y: auto;
+  background: var(--ds-shell-nav-bg);
+  color: var(--ds-shell-nav-text);
+  font-family: var(--ds-shell-font);
+}
+/* Anel de foco claro sobre o preto (o azul do painel some no #1a1a1a). */
+.ds-shell .ds-shell-sidebar :focus-visible {
+  outline-color: var(--ds-shell-focus-on-dark);
+}
+.ds-shell-nav {
+  padding: 0.75rem 0.5rem 1.5rem;
+}
+.ds-shell-nav__section + .ds-shell-nav__section {
+  margin-top: 1rem;
+}
+.ds-shell-nav__heading {
+  margin: 0;
+  padding: 0.25rem 0.5rem 0.375rem;
+  overflow: hidden;
+  color: var(--ds-shell-nav-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-shell-nav__list,
+.ds-shell-nav__sublist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ds-shell-nav__link,
+.ds-shell-nav__sublink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 1.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--ds-shell-radius);
+  color: var(--ds-shell-nav-text);
+  font-size: 0.8125rem;
+  font-weight: 550;
+  text-decoration: none;
+}
+.ds-shell-nav__link:hover,
+.ds-shell-nav__sublink:hover {
+  background: var(--ds-shell-nav-hover);
+}
+.ds-shell-nav__link--active {
+  background: var(--ds-shell-nav-active);
+  font-weight: 650;
+}
+.ds-shell-nav__sublink {
+  padding-left: 2.25rem;
+  color: var(--ds-shell-nav-text-secondary);
+  font-weight: 450;
+}
+.ds-shell-nav__sublink--active {
+  color: var(--ds-shell-nav-text);
+  font-weight: 650;
+}
+.ds-shell-nav__icon {
+  display: inline-flex;
+  flex: 0 0 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-shell-nav-text);
+}
+.ds-shell-nav__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ds-shell-nav__badge {
+  flex: 0 0 auto;
+  min-width: 1.25rem;
+  padding: 0 0.375rem;
+  border-radius: 999px;
+  background: var(--ds-shell-nav-badge-bg);
+  color: var(--ds-shell-nav-badge-text);
+  font-size: 0.6875rem;
+  font-weight: 650;
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+/* ─── Conteúdo ─────────────────────────────────────────────────────── */
+.ds-shell-main {
+  min-height: 100vh;
+  padding-top: var(--ds-shell-topbar-h);
+  /* Story 20.14a — a faixa preta da direita da moldura não cobre conteúdo. */
+  padding-right: var(--ds-shell-frame-gutter);
+  padding-left: var(--ds-shell-nav-w);
+  outline: none;
+}
+/* Frame do Polaris React (só contexto): sem altura extra e sem o link de pular dele. */
+.ds-shell-main .Polaris-Frame {
+  min-height: calc(100vh - var(--ds-shell-topbar-h));
+}
+.ds-shell-main .Polaris-Frame__Skip {
+  display: none;
+}
+
+/*
+ * Story 20.14a — moldura: o conteúdo aparece como painel claro de cantos
+ * arredondados encaixado no preto do cabeçalho/menu. É uma MÁSCARA fixa e
+ * decorativa (sem clique, fora da árvore de acessibilidade): o retângulo
+ * arredondado é transparente e a sombra de spread enorme pinta de preto só o
+ * que fica fora dele. A JANELA continua rolando (o conteúdo passa por baixo),
+ * então `position: sticky`, `scrollTo` e a rolagem do Next não mudam.
+ * Inset: topo = cabeçalho, esquerda = menu, direita = faixa fina, embaixo = 0
+ * (a barra `sticky bottom: 0` do editor de landing não fica coberta).
+ * z-index 505: acima do conteúdo (inclui o editor inline em tela cheia, 500),
+ * abaixo do backdrop do celular (510), menu (511), cabeçalho (512), popovers
+ * (515), diálogos (520) e da camada superior dos modais (<dialog>).
+ */
+.ds-shell-frame {
+  position: fixed;
+  top: var(--ds-shell-topbar-h);
+  right: var(--ds-shell-frame-gutter);
+  bottom: 0;
+  left: var(--ds-shell-nav-w);
+  z-index: 505;
+  border-radius: var(--ds-shell-frame-radius);
+  box-shadow: 0 0 0 100vmax var(--ds-shell-topbar-bg);
+  pointer-events: none;
+}
+@media print {
+  .ds-shell-frame {
+    display: none;
+  }
+}
+
+.ds-shell-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0.75rem 1rem 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--ds-shell-radius);
+  font: 450 0.8125rem/1.25rem var(--ds-shell-font);
+}
+.ds-shell-notice--warning {
+  background: var(--ds-shell-warning-bg);
+  color: var(--ds-shell-warning-text);
+}
+.ds-shell-notice--critical {
+  background: var(--ds-shell-critical-bg);
+  color: var(--ds-shell-critical-text);
+}
+/* Story 22.1c — faixa informativa (pedidos de acesso pendentes), ações lado a lado. */
+.ds-shell-notice--info {
+  background: #eaf4ff;
+  color: #00527c;
+}
+.ds-shell-notice__actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ds-shell-module-off {
+  max-width: 36rem;
+  margin: 2rem auto;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: var(--ds-shell-surface);
+  box-shadow: 0 1px 0 rgba(26, 26, 26, 0.07), 0 0 0 1px rgba(26, 26, 26, 0.07);
+  color: var(--ds-shell-text);
+  font: 450 0.8125rem/1.25rem var(--ds-shell-font);
+}
+.ds-shell-module-off__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+.ds-shell-module-off__text {
+  margin: 0 0 1rem;
+  color: var(--ds-shell-text-secondary);
+}
+
+/* Botões e campos da moldura (funcionam sem o script do Polaris 2) */
+.ds-shell-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.75rem;
+  padding: 0.25rem 0.75rem;
+  border: 0;
+  border-radius: var(--ds-shell-radius);
+  background: var(--ds-shell-surface);
+  box-shadow: inset 0 -1px 0 #b5b5b5, inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  color: var(--ds-shell-text);
+  font: 550 0.75rem/1rem var(--ds-shell-font);
+  text-decoration: none;
+  cursor: pointer;
+}
+.ds-shell-button:hover:not(:disabled) {
+  background: #f7f7f7;
+}
+.ds-shell-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.ds-shell-button--primary {
+  background: #303030;
+  box-shadow: inset 0 -1px 0 #000;
+  color: #fff;
+}
+.ds-shell-button--primary:hover:not(:disabled) {
+  background: #1a1a1a;
+}
+
+.ds-shell-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 520;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+}
+.ds-shell-dialog {
+  display: grid;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 26rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--ds-shell-surface);
+  color: var(--ds-shell-text);
+  box-shadow: var(--ds-shell-shadow);
+  font: 450 0.8125rem/1.25rem var(--ds-shell-font);
+}
+.ds-shell-dialog__title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 650;
+}
+.ds-shell-dialog__error {
+  margin: 0;
+  color: var(--ds-shell-critical-text);
+}
+.ds-shell-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+.ds-shell-field {
+  display: grid;
+  gap: 0.25rem;
+}
+.ds-shell-field__label {
+  font-weight: 550;
+}
+.ds-shell-field__input {
+  height: 2rem;
+  padding: 0 0.75rem;
+  border: 1px solid #8a8a8a;
+  border-radius: var(--ds-shell-radius);
+  color: var(--ds-shell-text);
+  font: inherit;
+}
+
+.ds-shell-backdrop {
+  display: none;
+}
+
+/* ─── Celular ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ds-shell-topbar {
+    gap: 0.5rem;
+    padding: 0 0.5rem;
+  }
+  .ds-shell-topbar__toggle {
+    display: inline-flex;
+  }
+  .ds-shell-topbar__logo {
+    margin-right: 0;
+  }
+  .ds-shell-topbar__logo-full,
+  .ds-shell-search__kbd,
+  .ds-shell-user__name {
+    display: none;
+  }
+  .ds-shell-topbar__logo-mark {
+    display: inline-flex;
+  }
+  .ds-shell-store__trigger {
+    max-width: 7.5rem;
+  }
+  .ds-shell-search__input {
+    padding-right: 0.5rem;
+  }
+  .ds-shell-store__panel {
+    position: fixed;
+    top: var(--ds-shell-topbar-h);
+    left: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+  }
+  .ds-shell-search__panel {
+    position: fixed;
+    top: var(--ds-shell-topbar-h);
+    left: 0.5rem;
+    right: 0.5rem;
+  }
+  .ds-shell-sidebar {
+    width: min(18rem, 85vw);
+    box-shadow: var(--ds-shell-shadow);
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform 0.2s ease, visibility 0s linear 0.2s;
+  }
+  .ds-shell--nav-open .ds-shell-sidebar {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.2s ease;
+  }
+  .ds-shell-backdrop {
+    display: block;
+    position: fixed;
+    inset: var(--ds-shell-topbar-h) 0 0 0;
+    z-index: 510;
+    background: rgba(0, 0, 0, 0.4);
+  }
+  .ds-shell-main {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  /* Sem menu fixo: painel de borda a borda, só os cantos de cima arredondados. */
+  .ds-shell-frame {
+    right: 0;
+    left: 0;
+    border-radius: var(--ds-shell-frame-radius) var(--ds-shell-frame-radius) 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-shell-sidebar {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,194 @@
+/*
+ * Story 21.2a / 21.2a-v3 — globo "Ao vivo" (components/live/LiveGlobe.tsx).
+ *
+ * v3 = o globo do admin da Shopify: a ESFERA é só CSS (`.ds-live-globe__sphere`
+ * — degradê suave, sem aro e sem sombra externa: quase branca junto à borda,
+ * um pouco mais cinza para dentro) e os PAÍSES são pontinhos desenhados num
+ * canvas 2D por cima (LiveGlobeCanvas → dot-globe.ts), que somem perto da
+ * borda. Calibrado para fundo BRANCO (Decisão 3). A variante escura
+ * (`.ds-corner-globe--dark`, login com fundo escuro) só troca os tokens.
+ *
+ * Tokens `--ds-live-globe-*`: lidos pelo canvas (cor/opacidade/tamanho do
+ * ponto, inclinação, cor dos marcadores) e pela esfera/fallback em CSS.
+ */
+
+.ds-live-globe {
+  /* pontos (canvas) */
+  --ds-live-globe-dot: #1c1c1c;
+  --ds-live-globe-dot-opacity: 1;
+  --ds-live-globe-dot-size: 0.95;
+  --ds-live-globe-marker: #36fba1;
+  --ds-live-globe-theta: 0.5;
+  /* esfera: fundo de referência, miolo um pouco mais cinza, borda quase do fundo */
+  --ds-live-globe-surface: #fff;
+  --ds-live-globe-sphere:
+    radial-gradient(
+      circle closest-side,
+      #f2f2f2 0%,
+      #f3f3f3 25%,
+      #f5f5f5 42%,
+      #f7f7f7 56%,
+      #f9f9f9 70%,
+      #fbfbfb 82%,
+      #fdfdfd 92%,
+      #fefefe 100%
+    );
+  /* halo de 1–3 níveis de cinza logo fora da silhueta (não é sombra: some em ~30 px) */
+  --ds-live-globe-halo: 0 0 18px 3px rgba(0, 0, 0, 0.014);
+  /* fallback estático (sem canvas / enquanto carrega): pontos sutis */
+  --ds-live-globe-fallback-dot: rgba(38, 38, 38, 0.16);
+  --ds-live-globe-fade: 0.6s;
+
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  flex: none;
+  overflow: hidden;
+  line-height: 0;
+  vertical-align: middle;
+}
+
+/* Esfera (posição/tamanho vêm do enquadramento, inline): sem aro, sem sombra. */
+.ds-live-globe__sphere {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--ds-live-globe-sphere);
+  box-shadow: var(--ds-live-globe-halo);
+}
+
+.ds-live-globe__host {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity var(--ds-live-globe-fade) ease;
+}
+
+/* Fallback estático: grade de pontos sutil sobre a esfera, sumindo na borda. */
+.ds-live-globe__fallback {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--ds-live-globe-fallback-dot) 0.06rem, transparent 0.08rem) 0 0 / 0.25rem 0.25rem;
+  mask-image: radial-gradient(circle closest-side, #000 55%, transparent 100%);
+  transition: opacity var(--ds-live-globe-fade) ease;
+}
+
+.ds-live-globe__canvas {
+  display: block;
+}
+
+.ds-live-globe[data-globe-state='ready'] .ds-live-globe__host {
+  opacity: 1;
+}
+
+.ds-live-globe[data-globe-state='ready'] .ds-live-globe__fallback {
+  opacity: 0;
+}
+
+.ds-live-globe[data-globe-state='fallback'] .ds-live-globe__host {
+  display: none;
+}
+
+/* ─── CornerGlobe: encaixado no canto superior direito de quem o contém
+   (`position: relative`), cortado pelas bordas superior e direita — só o
+   quadrante inferior-esquerdo da esfera aparece (contêiner 340 × 400,
+   esfera Ø 532 com centro a 22 px da direita e 70 px do topo — CornerGlobe.tsx). Decorativo,
+   atrás do conteúdo, sem clique, fora do Tab. ───────────────────────── */
+.ds-corner-globe {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  width: 340px;
+  height: 400px;
+  overflow: clip;
+  pointer-events: none;
+  user-select: none;
+  transform-origin: top right;
+}
+
+.ds-corner-globe .ds-live-globe {
+  display: block;
+}
+
+/* Variante escura (fundo escuro, ex.: login da 22.1b): esfera um tom acima do
+   fundo no miolo, dissolvendo na borda; pontos cinza-claros. */
+.ds-corner-globe--dark .ds-live-globe {
+  --ds-live-globe-dot: #c4cccc;
+  --ds-live-globe-dot-opacity: 0.48;
+  --ds-live-globe-surface: #03090a;
+  --ds-live-globe-sphere:
+    radial-gradient(
+      circle closest-side,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.045) 30%,
+      rgba(255, 255, 255, 0.035) 55%,
+      rgba(255, 255, 255, 0.02) 78%,
+      rgba(255, 255, 255, 0.008) 92%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  --ds-live-globe-halo: none;
+  --ds-live-globe-fallback-dot: rgba(196, 204, 204, 0.18);
+}
+
+@media (max-width: 1279px) {
+  .ds-corner-globe {
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 1023px) {
+  .ds-corner-globe--login {
+    transform: scale(0.6);
+  }
+}
+
+/* Celular / tablet estreito: o conteúdo ocupa a largura toda — sem globo. */
+@media (max-width: 768px) {
+  .ds-corner-globe--home {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .ds-corner-globe--login {
+    display: none;
+  }
+}
+
+/* ─── Login: o CornerGlobe sai do canto superior direito da viewport, atrás
+   do cartão. ─────────────────────────────────────────────────────────── */
+.ds-live-login {
+  position: relative;
+  overflow: hidden;
+}
+
+.ds-live-login__card {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Início: o CornerGlobe fica no canto superior direito do conteúdo,
+   logo abaixo do cabeçalho; o conteúdo por cima. ─────────────────────── */
+.ds-live-home {
+  position: relative;
+  isolation: isolate;
+  /* herdado da v2: corta sangrias do conteúdo sem barra de rolagem nem quebrar `sticky` */
+  overflow-x: clip;
+}
+
+.ds-live-home__content {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-live-globe__fallback,
+  .ds-live-globe__host {
+    transition: none;
+  }
+}

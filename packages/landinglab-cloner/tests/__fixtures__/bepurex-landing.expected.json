@@ -1,0 +1,79 @@
+{
+  "__placeholder": {
+    "status": "PENDING_SM_2_1",
+    "note": "TODO: preencher baseline oficial após SM-2.1 rodar `extractSkeleton({ htmlOverride: bepurexLandingHtml })` em modo debug e capturar o resultado real. Este arquivo é estruturalmente conforme ExtractedSourceJsonSchema (docs/architecture/skeleton-mode-architecture.md §5.1), porém os valores são hipóteses derivadas manualmente do HTML sanitizado.",
+    "created_by": "@dev (Dex) — SM-6.1",
+    "expected_theme_fingerprint": "bepurex",
+    "expected_partial": false
+  },
+  "copy": {
+    "hero_headline": "Bepurex Formula — Energia naturale ogni giorno",
+    "hero_subhead": "Estratti standardizzati per il supporto energetico. Vegan, senza glutine, senza OGM.",
+    "benefit_bullets": [
+      "Supporto energetico giornaliero",
+      "Estratti standardizzati con studi clinici",
+      "Vegan, senza glutine, senza OGM",
+      "Prodotto in Italia sotto controllo qualità"
+    ],
+    "faq": [
+      { "q": "Come si assume?", "a": "1 capsula al giorno con un bicchiere d'acqua, preferibilmente al mattino." },
+      { "q": "Quanto dura una confezione?", "a": "Una confezione da 30 capsule copre un mese di utilizzo." },
+      { "q": "Rimborso se non funziona?", "a": "Sì, 30 giorni soddisfatti o rimborsati." }
+    ],
+    "testimonials": [
+      { "author": "F. C. — Torino", "content": "Ottimo prodotto, spedizione rapida." },
+      { "author": "A. B. — Bologna", "content": "Dopo un mese mi sento meglio. Ordinerò di nuovo." }
+    ]
+  },
+  "imagery": {
+    "hero_url": "https://cdn.example.com/bepurex-landing/main.jpg",
+    "gallery_urls": [
+      "https://cdn.example.com/bepurex-landing/thumb1.jpg",
+      "https://cdn.example.com/bepurex-landing/thumb2.jpg",
+      "https://cdn.example.com/bepurex-landing/thumb3.jpg"
+    ],
+    "lifestyle_urls": [],
+    "logo_url": "https://cdn.example.com/bepurex-landing/logo.svg"
+  },
+  "brand": {
+    "colors_hex_candidates": [],
+    "fonts_used": []
+  },
+  "commerce": {
+    "reviews": [
+      { "author": "F. C. — Torino", "content": "Ottimo prodotto, spedizione rapida.", "rating": 5 },
+      { "author": "A. B. — Bologna", "content": "Dopo un mese mi sento meglio. Ordinerò di nuovo.", "rating": 5 }
+    ],
+    "bundles": [
+      { "name": "1 flacone (30 giorni)", "price_cents": 4900, "qty": 1 },
+      { "name": "3 flaconi (90 giorni)", "price_cents": 11700, "compare_at_cents": 14700, "qty": 3 },
+      { "name": "6 flaconi (180 giorni)", "price_cents": 23400, "compare_at_cents": 29400, "qty": 6 }
+    ],
+    "currency": "EUR",
+    "badges": [
+      "Garanzia 30 giorni",
+      "Spedizione gratuita in Italia",
+      "Pagamenti sicuri"
+    ]
+  },
+  "dynamic_extras": [
+    {
+      "kind": "story",
+      "heading": "Cosa aspettarsi",
+      "payload": {
+        "steps": [
+          { "label": "Settimana 1", "body": "Il corpo inizia ad assimilare gli estratti." },
+          { "label": "Settimana 2", "body": "Primi segnali di maggiore energia al mattino." },
+          { "label": "Settimana 6", "body": "Effetto pieno del ciclo consigliato." }
+        ]
+      },
+      "llm_verdict": "optional",
+      "llm_reason": "Timeline compacta (cc-timeline) reforça benefício mas não é o eixo principal da PDP."
+    }
+  ],
+  "meta": {
+    "partial": false,
+    "unresolved_fields": [],
+    "detected_language": "it"
+  }
+}

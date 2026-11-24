@@ -1,0 +1,166 @@
+<!--
+  Fixture: kaching-landing.html
+  Source: sanitized replica of a Kaching-based Shopify landing (uses Kaching Bundles app).
+  Purpose: SM-2.1 skeleton-extractor theme fingerprint = 'kaching' + Kaching bundles selector path.
+  Sanitization applied:
+    - No real customer names, emails, phones
+    - No API tokens / analytics IDs / Shopify shop IDs
+    - Prices in EUR are illustrative
+    - CDN URLs replaced with cdn.example.com
+  Theme markers preserved: .kaching-bundles-block, .kaching-bundles__bar, .spr-review
+    (from landinglab-fixes-injector.ts + docs/architecture/skeleton-mode-architecture.md ADR-9)
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kaching Landing — Natural Wellness Supplement</title>
+  <meta name="description" content="Premium natural supplement. Free shipping, 30-day guarantee, bundle discounts.">
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="Kaching Landing — Natural Wellness">
+  <meta property="og:image" content="https://cdn.example.com/kaching/hero.jpg">
+  <link rel="canonical" href="https://example.com/kaching/landing-en">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Wellness Formula",
+    "image": "https://cdn.example.com/kaching/hero.jpg",
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "EUR",
+      "lowPrice": "39.00",
+      "highPrice": "199.00"
+    }
+  }
+  </script>
+</head>
+<body class="template-product kaching-theme">
+
+  <header class="site-header">
+    <a class="site-header__logo" href="/">
+      <img src="https://cdn.example.com/kaching/logo.svg" alt="Wellness Co" width="140" height="32">
+    </a>
+  </header>
+
+  <main class="product-page">
+
+    <section class="product-hero">
+      <div class="product-hero__gallery">
+        <picture>
+          <img src="https://cdn.example.com/kaching/main.jpg" alt="Wellness Formula bottle" width="800" height="800" loading="eager">
+        </picture>
+      </div>
+      <div class="product-hero__thumbs">
+        <img src="https://cdn.example.com/kaching/thumb1.jpg" alt="Product label" width="120" height="120" loading="lazy">
+        <img src="https://cdn.example.com/kaching/thumb2.jpg" alt="Ingredients closeup" width="120" height="120" loading="lazy">
+        <img src="https://cdn.example.com/kaching/thumb3.jpg" alt="Lifestyle" width="120" height="120" loading="lazy">
+      </div>
+      <div class="product-hero__info">
+        <h1 class="product-hero__title">Wellness Formula — Daily Natural Support</h1>
+        <p class="product-hero__subtitle">Clinically studied extracts for daily vitality. Vegan, gluten-free, non-GMO.</p>
+        <div class="product-hero__stars">★★★★★ <span>4.7 (1,842 reviews)</span></div>
+      </div>
+    </section>
+
+    <section class="kaching-bundles-block" data-block-id="bundles-hero">
+      <h2 class="kaching-bundles-block__heading">Choose your bundle</h2>
+      <div class="kaching-bundles-block__list">
+        <div class="kaching-bundles__bar" data-deal-bar-id="1x">
+          <div class="kaching-bundles__bar-title">1 bottle (30 days)</div>
+          <div class="kaching-bundles__bar-price">€39</div>
+          <div class="kaching-bundles__bar-qty">30 capsules</div>
+        </div>
+        <div class="kaching-bundles__bar kaching-bundles__bar--selected" data-deal-bar-id="3x">
+          <div class="kaching-bundles__bar-badge">Best value</div>
+          <div class="kaching-bundles__bar-title">3 bottles (90 days)</div>
+          <div class="kaching-bundles__bar-price">€99</div>
+          <div class="kaching-bundles__bar-compare">€117</div>
+          <div class="kaching-bundles__bar-qty">90 capsules</div>
+        </div>
+        <div class="kaching-bundles__bar" data-deal-bar-id="6x">
+          <div class="kaching-bundles__bar-title">6 bottles (180 days)</div>
+          <div class="kaching-bundles__bar-price">€199</div>
+          <div class="kaching-bundles__bar-compare">€234</div>
+          <div class="kaching-bundles__bar-qty">180 capsules</div>
+        </div>
+      </div>
+      <button class="kaching-bundles__cta" type="button">Add to cart — €99</button>
+    </section>
+
+    <section class="benefits">
+      <h2>Why customers love it</h2>
+      <ul class="benefits__list">
+        <li>Sustained daily energy without the crash</li>
+        <li>Sharp focus for demanding workdays</li>
+        <li>Faster post-workout recovery</li>
+        <li>Deeper, more restful sleep</li>
+      </ul>
+    </section>
+
+    <section class="reviews">
+      <h2>Verified reviews</h2>
+      <div class="spr-reviews">
+        <article class="spr-review">
+          <div class="spr-review-header">
+            <div class="spr-starratings" aria-label="5 stars">★★★★★</div>
+            <span class="spr-review-header-title">Life changer</span>
+          </div>
+          <p class="spr-review-content-body">Feeling much better after 3 weeks. Highly recommend.</p>
+          <footer class="spr-review-footer">
+            <span class="spr-review-header-byline">J. K. — verified buyer</span>
+          </footer>
+        </article>
+        <article class="spr-review">
+          <div class="spr-review-header">
+            <div class="spr-starratings">★★★★★</div>
+            <span class="spr-review-header-title">Great value</span>
+          </div>
+          <p class="spr-review-content-body">Fast shipping and the bundle discount is real.</p>
+          <footer class="spr-review-footer">
+            <span class="spr-review-header-byline">M. S. — verified buyer</span>
+          </footer>
+        </article>
+        <article class="spr-review">
+          <div class="spr-review-header">
+            <div class="spr-starratings">★★★★☆</div>
+            <span class="spr-review-header-title">Solid product</span>
+          </div>
+          <p class="spr-review-content-body">Noticed a difference after about a month of consistent use.</p>
+          <footer class="spr-review-footer">
+            <span class="spr-review-header-byline">R. T. — verified buyer</span>
+          </footer>
+        </article>
+      </div>
+    </section>
+
+    <section class="faq">
+      <h2>Frequently asked questions</h2>
+      <details class="faq__item">
+        <summary>How do I take it?</summary>
+        <div class="faq__answer">1 capsule daily with a glass of water, ideally in the morning.</div>
+      </details>
+      <details class="faq__item">
+        <summary>When will I see results?</summary>
+        <div class="faq__answer">Most customers notice something after 2-3 weeks. Full cycle is 6-8 weeks.</div>
+      </details>
+      <details class="faq__item">
+        <summary>What is your return policy?</summary>
+        <div class="faq__answer">30-day satisfaction guarantee. Full refund, no questions asked.</div>
+      </details>
+    </section>
+
+    <section class="guarantee">
+      <img src="https://cdn.example.com/kaching/badge-30d.svg" alt="30-day guarantee" width="80" height="80" loading="lazy">
+      <p>30-day money-back guarantee · Free EU shipping · Secure checkout</p>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© Wellness Co — Natural supplements. Not a medicine.</p>
+  </footer>
+
+</body>
+</html>

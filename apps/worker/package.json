@@ -1,0 +1,47 @@
+{
+  "name": "@blackshop/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "dotenv --no-expand -e ../../.env -e ../../.env.local -e .env -- tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json --noEmit",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@blackshop/db": "workspace:*",
+    "@blackshop/jobs": "workspace:*",
+    "@blackshop/observability": "workspace:*",
+    "@blackshop/landinglab-build": "workspace:*",
+    "@blackshop/landinglab-adapters": "workspace:*",
+    "@blackshop/landinglab-cloner": "workspace:*",
+    "@blackshop/landinglab-copy": "workspace:*",
+    "@blackshop/landinglab-deploy": "workspace:*",
+    "@blackshop/landinglab-domains": "workspace:*",
+    "@blackshop/landinglab-research": "workspace:*",
+    "@blackshop/landinglab-visual": "workspace:*",
+    "@blackshop/pricing": "workspace:*",
+    "@blackshop/shared": "workspace:*",
+    "@blackshop/shopify-adapter": "workspace:*",
+    "@blackshop/vault": "workspace:*",
+    "@supabase/supabase-js": "^2.108.0",
+    "bullmq": "^5.21.0",
+    "cheerio": "^1.2.0",
+    "drizzle-orm": "^0.36.4",
+    "ioredis": "^5.4.1",
+    "pino": "^9.5.0",
+    "tsx": "^4.19.2",
+    "ws": "^8.21.0",
+    "@blackshop/vsl-hosting": "workspace:*",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "@types/ws": "^8.18.1",
+    "typescript": "^5.5.4",
+    "vitest": "^1.6.0"
+  }
+}
